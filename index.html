@@ -1,20 +1,37 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CodeBounty AI – Earn Crypto by Solving GitHub Issues</title>
+    <title>CodeBounty AI – AI-Powered Open Source Collaboration</title>
 
-    <!-- Tailwind CSS via CDN -->
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com">
     </script>
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-    <!-- Google Font (Inter) -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
 
     <style>
-        /* ─────────── Custom Styles ─────────── */
+        /* ─── ROOT VARIABLES ─── */
+        :root {
+            --bg-primary: #070B18;
+            --bg-secondary: #111827;
+            --bg-card: #151A2D;
+            --color-primary: #7C3AED;
+            --color-secondary: #3B82F6;
+            --color-success: #10B981;
+            --color-warning: #F59E0B;
+            --color-danger: #EF4444;
+            --text-primary: #FFFFFF;
+            --text-secondary: #94A3B8;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.4);
+            --radius: 18px;
+        }
+
+        /* ─── RESET & BASE ─── */
         * {
             margin: 0;
             padding: 0;
@@ -23,853 +40,1125 @@
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: #0b0a12;
-            color: #f1f5f9;
+            background: var(--bg-primary);
+            color: var(--text-primary);
             min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        /* Scrollbar */
+        /* ─── SCROLLBAR ─── */
         ::-webkit-scrollbar {
             width: 6px;
         }
         ::-webkit-scrollbar-track {
-            background: #1a1930;
+            background: var(--bg-secondary);
         }
         ::-webkit-scrollbar-thumb {
-            background: linear-gradient(180deg, #6366f1, #a855f7);
+            background: linear-gradient(180deg, var(--color-primary), var(--color-secondary));
             border-radius: 12px;
         }
 
-        /* Glassmorphism base */
-        .glass {
-            background: rgba(255, 255, 255, 0.04);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 20px;
+        /* ─── UTILITY ─── */
+        .font-space {
+            font-family: 'Space Grotesk', monospace;
         }
 
-        .glass-card {
-            background: rgba(255, 255, 255, 0.035);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 16px;
-            transition: all 0.25s ease;
-        }
-        .glass-card:hover {
-            background: rgba(255, 255, 255, 0.06);
-            border-color: rgba(255, 255, 255, 0.10);
-            transform: translateY(-2px);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
-        }
-
-        /* Gradient text */
         .gradient-text {
-            background: linear-gradient(135deg, #60a5fa, #a78bfa, #f472b6);
+            background: linear-gradient(135deg, var(--color-secondary), var(--color-primary), #A855F7);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
 
-        .gradient-border {
-            border-image: linear-gradient(135deg, #6366f1, #a855f7, #ec4899) 1;
+        .gradient-text-2 {
+            background: linear-gradient(135deg, #60A5FA, #7C3AED, #EC4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
-        /* Button primary */
+        .bg-gradient-primary {
+            background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+        }
+
+        .bg-gradient-glow {
+            background: radial-gradient(circle at 30% 50%, rgba(124, 58, 237, 0.15), transparent 70%);
+        }
+
+        /* ─── GLASSMORPHISM ─── */
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+        }
+
+        .glass-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: var(--shadow-card);
+        }
+
+        .glass-card:hover {
+            border-color: rgba(124, 58, 237, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 48px rgba(124, 58, 237, 0.15);
+        }
+
+        /* ─── BUTTONS ─── */
         .btn-primary {
-            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            background: linear-gradient(135deg, var(--color-primary), #6D28D9);
             color: #fff;
             font-weight: 600;
-            padding: 0.65rem 1.75rem;
+            padding: 0.7rem 1.8rem;
             border-radius: 9999px;
             border: none;
             cursor: pointer;
-            transition: all 0.25s ease;
-            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.30);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(124, 58, 237, 0.35);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
         }
+
         .btn-primary:hover {
-            transform: scale(1.02);
-            box-shadow: 0 8px 32px rgba(99, 102, 241, 0.45);
-        }
-        .btn-primary:active {
-            transform: scale(0.97);
+            transform: scale(1.03);
+            box-shadow: 0 8px 32px rgba(124, 58, 237, 0.5);
         }
 
-        .btn-outline {
-            background: transparent;
-            color: #cbd5e1;
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--text-primary);
             font-weight: 500;
-            padding: 0.65rem 1.75rem;
+            padding: 0.7rem 1.8rem;
             border-radius: 9999px;
-            border: 1px solid rgba(255, 255, 255, 0.12);
+            border: 1px solid var(--border-color);
             cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        .btn-outline:hover {
-            background: rgba(255, 255, 255, 0.05);
-            border-color: rgba(255, 255, 255, 0.25);
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
         }
 
-        /* Badge */
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--color-success), #059669);
+            color: #fff;
+            font-weight: 600;
+            padding: 0.6rem 1.5rem;
+            border-radius: 9999px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+        }
+
+        .btn-success:hover {
+            transform: scale(1.03);
+            box-shadow: 0 8px 32px rgba(16, 185, 129, 0.45);
+        }
+
+        /* ─── BADGE ─── */
         .badge {
             display: inline-flex;
             align-items: center;
-            gap: 0.25rem;
-            padding: 0.2rem 0.75rem;
+            gap: 0.3rem;
+            padding: 0.2rem 0.7rem;
             border-radius: 9999px;
-            font-size: 0.70rem;
+            font-size: 0.7rem;
             font-weight: 600;
-            letter-spacing: 0.02em;
             text-transform: uppercase;
+            letter-spacing: 0.03em;
         }
+
         .badge-open {
-            background: rgba(74, 222, 128, 0.15);
-            color: #4ade80;
-            border: 1px solid rgba(74, 222, 128, 0.20);
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--color-success);
+            border: 1px solid rgba(16, 185, 129, 0.2);
         }
-        .badge-paid {
-            background: rgba(96, 165, 250, 0.15);
-            color: #60a5fa;
-            border: 1px solid rgba(96, 165, 250, 0.20);
+        .badge-closed {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--color-danger);
+            border: 1px solid rgba(239, 68, 68, 0.2);
         }
-        .badge-inprogress {
-            background: rgba(251, 191, 36, 0.15);
-            color: #fbbf24;
-            border: 1px solid rgba(251, 191, 36, 0.20);
+        .badge-in-progress {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--color-warning);
+            border: 1px solid rgba(245, 158, 11, 0.2);
         }
-
-        /* Stat number */
-        .stat-number {
-            font-size: 2.2rem;
-            font-weight: 800;
-            letter-spacing: -0.02em;
+        .badge-review {
+            background: rgba(59, 130, 246, 0.15);
+            color: var(--color-secondary);
+            border: 1px solid rgba(59, 130, 246, 0.2);
         }
 
-        /* Modal overlay */
-        .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.70);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 999;
-            padding: 1.5rem;
-        }
-        .modal-overlay.show {
+        /* ─── SIDEBAR ─── */
+        .sidebar-item {
             display: flex;
-        }
-
-        .modal-box {
-            max-width: 560px;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.6rem 1rem;
+            border-radius: 12px;
+            color: var(--text-secondary);
+            transition: all 0.2s ease;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-decoration: none;
             width: 100%;
-            max-height: 90vh;
-            overflow-y: auto;
-            background: #161528;
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 24px;
-            padding: 2rem;
-            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.7);
+            border: none;
+            background: transparent;
         }
 
-        /* Detail view */
-        .detail-view {
-            display: none;
-        }
-        .detail-view.active {
-            display: block;
+        .sidebar-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
         }
 
-        /* Payment success animation */
-        .success-check {
-            animation: pop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        .sidebar-item.active {
+            background: rgba(124, 58, 237, 0.15);
+            color: var(--color-primary);
+            box-shadow: inset 3px 0 0 var(--color-primary);
         }
-        @keyframes pop {
-            0% {
-                transform: scale(0);
+
+        .sidebar-item i {
+            width: 20px;
+            text-align: center;
+            font-size: 1rem;
+        }
+
+        /* ─── ANIMATIONS ─── */
+        @keyframes fadeUp {
+            from {
                 opacity: 0;
+                transform: translateY(20px);
             }
-            100% {
-                transform: scale(1);
+            to {
                 opacity: 1;
+                transform: translateY(0);
             }
         }
 
-        /* Floating particles (decorative) */
-        .particle {
+        @keyframes float {
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-12px);
+            }
+        }
+
+        @keyframes pulseGlow {
+            0%,
+            100% {
+                opacity: 0.4;
+            }
+            50% {
+                opacity: 0.8;
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes countUp {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .animate-fadeUp {
+            animation: fadeUp 0.6s ease forwards;
+        }
+
+        .animate-float {
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .animate-slideIn {
+            animation: slideIn 0.5s ease forwards;
+        }
+
+        .animate-pulseGlow {
+            animation: pulseGlow 3s ease-in-out infinite;
+        }
+
+        /* ─── FLOATING ORBS ─── */
+        .orb {
             position: fixed;
             border-radius: 50%;
             pointer-events: none;
-            opacity: 0.08;
+            filter: blur(80px);
             z-index: 0;
+            opacity: 0.3;
         }
 
-        /* Responsive */
-        @media (max-width: 640px) {
-            .stat-number {
-                font-size: 1.6rem;
+        /* ─── SCORE CIRCLE ─── */
+        .score-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            font-family: 'Space Grotesk', monospace;
+            position: relative;
+        }
+
+        .score-circle::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: 50%;
+            padding: 2px;
+            background: conic-gradient(var(--color-primary) var(--score, 0%), rgba(255, 255, 255, 0.1) var(--score, 0%));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+        }
+
+        /* ─── RESPONSIVE ─── */
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                flex-direction: row !important;
+                overflow-x: auto;
+                background: var(--bg-primary);
+                border-top: 1px solid var(--border-color);
+                padding: 0.5rem 0.75rem;
+                z-index: 50;
+                height: auto;
+                width: 100% !important;
+                border-right: none !important;
             }
-            .glass-card {
-                padding: 1rem !important;
+            .sidebar-item {
+                flex-direction: column;
+                padding: 0.4rem 0.6rem;
+                font-size: 0.6rem;
+                gap: 0.2rem;
+                min-width: 56px;
+            }
+            .sidebar-item i {
+                font-size: 1.1rem;
+            }
+            .sidebar-item span {
+                display: block;
+            }
+            .main-content {
+                margin-left: 0 !important;
+                padding-bottom: 80px !important;
+            }
+            .hide-mobile {
+                display: none !important;
             }
         }
 
-        /* Demo progress bar */
-        .demo-progress {
-            height: 4px;
-            background: rgba(255, 255, 255, 0.08);
-            border-radius: 4px;
-            overflow: hidden;
+        /* ─── PAGE TRANSITIONS ─── */
+        .page {
+            display: none;
+            animation: fadeUp 0.4s ease forwards;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* ─── TABLE ─── */
+        .table-wrap {
+            overflow-x: auto;
+        }
+
+        .table-wrap table {
             width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
         }
-        .demo-progress-bar {
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(90deg, #6366f1, #a855f7, #ec4899);
-            transition: width 0.4s ease;
+
+        .table-wrap th {
+            text-align: left;
+            padding: 0.75rem 1rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .table-wrap td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-primary);
+        }
+
+        .table-wrap tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        /* ─── MISC ─── */
+        .truncate {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .transition-smooth {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
     </style>
 </head>
 
 <body>
 
-    <!-- ─── DECORATIVE PARTICLES ─── -->
-    <div class="particle" style="width:320px;height:320px;background:#6366f1;top:-80px;right:-80px;filter:blur(120px);"></div>
-    <div class="particle" style="width:240px;height:240px;background:#a855f7;bottom:-60px;left:-60px;filter:blur(100px);"></div>
-    <div class="particle" style="width:160px;height:160px;background:#ec4899;top:40%;right:10%;filter:blur(80px);"></div>
+    <!-- ─── FLOATING ORBS ─── -->
+    <div class="orb" style="width:400px;height:400px;background:var(--color-primary);top:-100px;right:-100px;"></div>
+    <div class="orb" style="width:300px;height:300px;background:var(--color-secondary);bottom:-80px;left:-80px;"></div>
+    <div class="orb" style="width:200px;height:200px;background:#A855F7;top:40%;right:5%;"></div>
 
-    <!-- ─── APP ─── -->
-    <div id="app" class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-6">
+    <!-- ─── APP CONTAINER ─── -->
+    <div id="app" class="relative z-10 min-h-screen flex">
 
-        <!-- ═══ NAVBAR ═══ -->
-        <header class="flex items-center justify-between flex-wrap gap-4 mb-8">
-            <div class="flex items-center gap-3">
-                <span class="text-3xl font-extrabold tracking-tight gradient-text">CodeBounty AI</span>
-                <span class="hidden sm:inline-block text-xs font-medium text-gray-400 bg-white/5 px-3 py-1 rounded-full border border-white/5">v1.0</span>
+        <!-- ═══ SIDEBAR ═══ -->
+        <aside class="sidebar glass w-[72px] lg:w-[220px] min-h-screen border-r border-[var(--border-color)] flex-shrink-0 flex flex-col p-3 lg:p-4 sticky top-0 h-screen overflow-y-auto">
+            <!-- Logo -->
+            <div class="flex items-center gap-2 mb-6 lg:mb-8 px-2">
+                <div class="w-8 h-8 rounded-xl bg-gradient-primary flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
+                    <i class="fa-solid fa-code"></i>
+                </div>
+                <span class="hidden lg:block text-lg font-bold gradient-text">CodeBounty</span>
             </div>
-            <div class="flex items-center gap-3 flex-wrap">
-                <button onclick="navigateTo('dashboard')" class="text-sm text-gray-300 hover:text-white transition px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10">Dashboard</button>
-                <button onclick="navigateTo('bounties')" class="text-sm text-gray-300 hover:text-white transition px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10">Bounties</button>
-                <button onclick="openCreateModal()" class="btn-primary text-sm flex items-center gap-2">
-                    <i class="fa-solid fa-plus"></i> Buat Bounty
-                </button>
-                <button onclick="startDemo()" class="btn-outline text-sm flex items-center gap-2 border-purple-500/30 text-purple-300 hover:bg-purple-500/10">
-                    <i class="fa-solid fa-play"></i> Demo 2 Menit
-                </button>
-                <button class="w-9 h-9 rounded-full bg-gradient-to-tr from-blue-500 to-purple-500 flex items-center justify-center text-white font-bold text-sm shadow-lg shadow-purple-500/25">
-                    JD
-                </button>
+
+            <!-- Navigation -->
+            <nav class="flex-1 space-y-0.5">
+                <button class="sidebar-item active" data-page="dashboard"><i class="fa-solid fa-gauge-high"></i><span class="hidden lg:inline">Dashboard</span></button>
+                <button class="sidebar-item" data-page="repositories"><i class="fa-solid fa-repo"></i><span class="hidden lg:inline">Repositories</span></button>
+                <button class="sidebar-item" data-page="ai-generator"><i class="fa-solid fa-wand-magic-sparkles"></i><span class="hidden lg:inline">AI Generator</span></button>
+                <button class="sidebar-item" data-page="bounties"><i class="fa-solid fa-tags"></i><span class="hidden lg:inline">Bounties</span></button>
+                <button class="sidebar-item" data-page="payments"><i class="fa-solid fa-credit-card"></i><span class="hidden lg:inline">Payments</span></button>
+                <button class="sidebar-item" data-page="wallet"><i class="fa-solid fa-wallet"></i><span class="hidden lg:inline">Wallet</span></button>
+                <button class="sidebar-item" data-page="leaderboard"><i class="fa-solid fa-trophy"></i><span class="hidden lg:inline">Leaderboard</span></button>
+                <button class="sidebar-item" data-page="analytics"><i class="fa-solid fa-chart-bar"></i><span class="hidden lg:inline">Analytics</span></button>
+                <button class="sidebar-item" data-page="settings"><i class="fa-solid fa-gear"></i><span class="hidden lg:inline">Settings</span></button>
+            </nav>
+
+            <!-- User -->
+            <div class="border-t border-[var(--border-color)] pt-3 lg:pt-4 mt-2">
+                <div class="flex items-center gap-2 px-2">
+                    <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-[var(--color-primary)] to-[var(--color-secondary)] flex items-center justify-center text-white font-bold text-xs flex-shrink-0">JD</div>
+                    <div class="hidden lg:block">
+                        <div class="text-sm font-medium">John Doe</div>
+                        <div class="text-xs text-[var(--text-secondary)]">Developer</div>
+                    </div>
+                </div>
             </div>
-        </header>
+        </aside>
 
-        <!-- ═══ DEMO PROGRESS BAR ═══ -->
-        <div id="demoProgress" class="demo-progress mb-6 hidden">
-            <div id="demoProgressBar" class="demo-progress-bar" style="width:0%"></div>
-        </div>
+        <!-- ═══ MAIN CONTENT ═══ -->
+        <main class="flex-1 p-4 lg:p-8 main-content overflow-y-auto min-h-screen">
 
-        <!-- ═══ VIEW: DASHBOARD ═══ -->
-        <div id="view-dashboard" class="space-y-8">
-
-            <!-- Stats Row -->
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div class="glass-card p-5 flex items-center gap-4">
-                    <div class="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center text-blue-400 text-xl"><i class="fa-solid fa-coins"></i></div>
+            <!-- ─── PAGE: DASHBOARD ─── -->
+            <section id="page-dashboard" class="page active">
+                <!-- Header -->
+                <div class="flex flex-wrap items-center justify-between gap-4 mb-8">
                     <div>
-                        <div class="text-sm text-gray-400">Total Earned</div>
-                        <div class="stat-number text-white">1,250 <span class="text-sm font-medium text-gray-400">NIM</span></div>
-                        <div class="text-xs text-emerald-400"><i class="fa-solid fa-arrow-up"></i> ≈ $320.50</div>
+                        <h1 class="text-2xl lg:text-3xl font-bold">Dashboard</h1>
+                        <p class="text-[var(--text-secondary)] text-sm mt-0.5">Welcome back, John! Here's what's happening.</p>
                     </div>
-                </div>
-                <div class="glass-card p-5 flex items-center gap-4">
-                    <div class="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center text-emerald-400 text-xl"><i class="fa-solid fa-check-circle"></i></div>
-                    <div>
-                        <div class="text-sm text-gray-400">Bounties Completed</div>
-                        <div class="stat-number text-white">24</div>
-                        <div class="text-xs text-emerald-400"><i class="fa-solid fa-arrow-up"></i> +12 this month</div>
-                    </div>
-                </div>
-                <div class="glass-card p-5 flex items-center gap-4">
-                    <div class="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center text-purple-400 text-xl"><i class="fa-solid fa-chart-line"></i></div>
-                    <div>
-                        <div class="text-sm text-gray-400">Success Rate</div>
-                        <div class="stat-number text-white">95<span class="text-sm font-medium text-gray-400">%</span></div>
-                        <div class="text-xs text-emerald-400"><i class="fa-solid fa-star"></i> Excellent</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Active Bounties + Recent Payouts (2 cols) -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <!-- Active Bounties -->
-                <div class="glass-card p-5">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-lg font-semibold text-white"><i class="fa-solid fa-bolt text-yellow-400 mr-2"></i>Active Bounties</h3>
-                        <span class="text-xs text-gray-400">3 open</span>
-                    </div>
-                    <div class="space-y-3">
-                        <div class="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/5 hover:border-white/10 transition cursor-pointer" onclick="openDetail('Fix login bug on /api/auth', 'nimiq / nimiq-explorer', 100, 'Open', 'Ada error saat user login dengan 2FA kadang gagal verifikasi.')">
-                            <div>
-                                <div class="text-sm font-medium text-white">Fix login bug on /api/auth</div>
-                                <div class="text-xs text-gray-400">nimiq / nimiq-explorer</div>
-                            </div>
-                            <div class="text-right">
-                                <div class="text-sm font-bold text-emerald-400">100 NIM</div>
-                                <span class="badge badge-open"><i class="fa-regular fa-circle"></i> Open</span>
-                            </div>
-                        </div>
-                        <div class="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/5 hover:border-white/10 transition cursor-pointer" onclick="openDetail('Add dark mode toggle', 'nimiq / nimiq-wallet', 80, 'Open', 'Tambahkan dark mode toggle di seluruh halaman wallet.')">
-                            <div>
-                                <div class="text-sm font-medium text-white">Add dark mode toggle</div>
-                                <div class="text-xs text-gray-400">nimiq / nimiq-wallet</div>
-                            </div>
-                            <div class="text-right">
-                                <div class="text-sm font-bold text-emerald-400">80 NIM</div>
-                                <span class="badge badge-open"><i class="fa-regular fa-circle"></i> Open</span>
-                            </div>
-                        </div>
-                        <div class="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/5 hover:border-white/10 transition cursor-pointer" onclick="openDetail('Improve API documentation', 'nimiq / nimiq-core', 60, 'Open', 'Dokumentasi API kurang lengkap. Tambahkan contoh dan penjelasan.')">
-                            <div>
-                                <div class="text-sm font-medium text-white">Improve API documentation</div>
-                                <div class="text-xs text-gray-400">nimiq / nimiq-core</div>
-                            </div>
-                            <div class="text-right">
-                                <div class="text-sm font-bold text-emerald-400">60 NIM</div>
-                                <span class="badge badge-open"><i class="fa-regular fa-circle"></i> Open</span>
-                            </div>
-                        </div>
-                    </div>
-                    <button onclick="navigateTo('bounties')" class="mt-4 text-sm text-blue-400 hover:text-blue-300 transition flex items-center gap-1">
-                        Lihat semua <i class="fa-solid fa-arrow-right"></i>
-                    </button>
+                    <button class="btn-primary"><i class="fa-solid fa-plus"></i> New Bounty</button>
                 </div>
 
-                <!-- Recent Payouts -->
-                <div class="glass-card p-5">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-lg font-semibold text-white"><i class="fa-solid fa-receipt text-emerald-400 mr-2"></i>Recent Payouts</h3>
+                <!-- Stats -->
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                    <div class="glass-card p-4 lg:p-5">
+                        <div class="text-sm text-[var(--text-secondary)]">Wallet Balance</div>
+                        <div class="text-2xl lg:text-3xl font-bold font-space mt-1">1,250 <span class="text-sm font-medium text-[var(--text-secondary)]">NIM</span></div>
+                        <div class="text-xs text-[var(--color-success)] mt-1"><i class="fa-solid fa-arrow-up"></i> +12.5% this week</div>
                     </div>
-                    <div class="space-y-3">
-                        <div class="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/5">
-                            <div>
-                                <div class="text-sm font-medium text-white">Fix transaction pagination</div>
-                                <div class="text-xs text-gray-400">nimiq / nimiq-explorer</div>
-                            </div>
-                            <div class="text-right">
-                                <div class="text-sm font-bold text-emerald-400">+75 NIM</div>
-                                <span class="badge badge-paid"><i class="fa-solid fa-check"></i> Paid</span>
-                            </div>
-                        </div>
-                        <div class="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/5">
-                            <div>
-                                <div class="text-sm font-medium text-white">Update README</div>
-                                <div class="text-xs text-gray-400">nimiq / nimiq-sdk</div>
-                            </div>
-                            <div class="text-right">
-                                <div class="text-sm font-bold text-emerald-400">+50 NIM</div>
-                                <span class="badge badge-paid"><i class="fa-solid fa-check"></i> Paid</span>
-                            </div>
-                        </div>
-                        <div class="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/5">
-                            <div>
-                                <div class="text-sm font-medium text-white">Security audit fix</div>
-                                <div class="text-xs text-gray-400">nimiq / nimiq-core</div>
-                            </div>
-                            <div class="text-right">
-                                <div class="text-sm font-bold text-emerald-400">+120 NIM</div>
-                                <span class="badge badge-paid"><i class="fa-solid fa-check"></i> Paid</span>
-                            </div>
-                        </div>
+                    <div class="glass-card p-4 lg:p-5">
+                        <div class="text-sm text-[var(--text-secondary)]">Total Earnings</div>
+                        <div class="text-2xl lg:text-3xl font-bold font-space mt-1">$320.50</div>
+                        <div class="text-xs text-[var(--color-success)] mt-1"><i class="fa-solid fa-arrow-up"></i> +8.2% this month</div>
                     </div>
-                </div>
-            </div>
-
-            <!-- How It Works + Features -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <!-- How It Works -->
-                <div class="glass-card p-5">
-                    <h3 class="text-lg font-semibold text-white mb-4"><i class="fa-solid fa-circle-info text-blue-400 mr-2"></i>CARA KERJA</h3>
-                    <div class="space-y-3 text-sm text-gray-300">
-                        <div class="flex gap-3 items-start">
-                            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-xs font-bold shrink-0">1</span>
-                            <div><span class="text-white font-medium">Owner Buat Bounty</span> — Pilih repo &amp; issue, tetapkan bounty (NIM / USDT).</div>
-                        </div>
-                        <div class="flex gap-3 items-start">
-                            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-xs font-bold shrink-0">2</span>
-                            <div><span class="text-white font-medium">Deposit dana</span> — Dana dikunci di escrow via Nimiq Pay.</div>
-                        </div>
-                        <div class="flex gap-3 items-start">
-                            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-xs font-bold shrink-0">3</span>
-                            <div><span class="text-white font-medium">Developer Ambil Issue</span> — Ambil issue &amp; mulai kerjakan di GitHub.</div>
-                        </div>
-                        <div class="flex gap-3 items-start">
-                            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-xs font-bold shrink-0">4</span>
-                            <div><span class="text-white font-medium">Kirim Pull Request</span> — Selesaikan &amp; kirim PR ke repository.</div>
-                        </div>
-                        <div class="flex gap-3 items-start">
-                            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-xs font-bold shrink-0">5</span>
-                            <div><span class="text-white font-medium">AI Review</span> — AI periksa kualitas PR (bug, kesesuaian, dll).</div>
-                        </div>
-                        <div class="flex gap-3 items-start">
-                            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-xs font-bold shrink-0">6</span>
-                            <div><span class="text-white font-medium">Owner Approve</span> — Owner approve PR jika sudah sesuai.</div>
-                        </div>
-                        <div class="flex gap-3 items-start">
-                            <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xs font-bold shrink-0">7</span>
-                            <div><span class="text-white font-medium">Instant Payment</span> — Pembayaran langsung via Nimiq Pay.</div>
-                        </div>
+                    <div class="glass-card p-4 lg:p-5">
+                        <div class="text-sm text-[var(--text-secondary)]">Open Bounties</div>
+                        <div class="text-2xl lg:text-3xl font-bold font-space mt-1">12</div>
+                        <div class="text-xs text-[var(--text-secondary)] mt-1">4 assigned to you</div>
+                    </div>
+                    <div class="glass-card p-4 lg:p-5">
+                        <div class="text-sm text-[var(--text-secondary)]">AI Health Score</div>
+                        <div class="text-2xl lg:text-3xl font-bold font-space mt-1 text-[var(--color-success)]">92%</div>
+                        <div class="text-xs text-[var(--text-secondary)] mt-1">Excellent</div>
                     </div>
                 </div>
 
-                <!-- Features -->
-                <div class="glass-card p-5">
-                    <h3 class="text-lg font-semibold text-white mb-4"><i class="fa-solid fa-star text-yellow-400 mr-2"></i>FITUR UTAMA</h3>
-                    <div class="grid grid-cols-2 gap-3">
-                        <div class="p-3 rounded-xl bg-white/5 border border-white/5 text-center">
-                            <div class="text-2xl text-blue-400 mb-1"><i class="fa-brands fa-github"></i></div>
-                            <div class="text-sm font-medium text-white">GitHub Integration</div>
-                            <div class="text-xs text-gray-400">Hubungkan repo &amp; ambil issue</div>
-                        </div>
-                        <div class="p-3 rounded-xl bg-white/5 border border-white/5 text-center">
-                            <div class="text-2xl text-purple-400 mb-1"><i class="fa-solid fa-brain"></i></div>
-                            <div class="text-sm font-medium text-white">AI Code Review</div>
-                            <div class="text-xs text-gray-400">Review PR &amp; jaga kualitas</div>
-                        </div>
-                        <div class="p-3 rounded-xl bg-white/5 border border-white/5 text-center">
-                            <div class="text-2xl text-emerald-400 mb-1"><i class="fa-solid fa-lock"></i></div>
-                            <div class="text-sm font-medium text-white">Escrow &amp; Instant</div>
-                            <div class="text-xs text-gray-400">Dana aman, bayar instan</div>
-                        </div>
-                        <div class="p-3 rounded-xl bg-white/5 border border-white/5 text-center">
-                            <div class="text-2xl text-yellow-400 mb-1"><i class="fa-solid fa-coins"></i></div>
-                            <div class="text-sm font-medium text-white">Multi Currency</div>
-                            <div class="text-xs text-gray-400">NIM atau USDT</div>
-                        </div>
-                        <div class="p-3 rounded-xl bg-white/5 border border-white/5 text-center">
-                            <div class="text-2xl text-orange-400 mb-1"><i class="fa-solid fa-trophy"></i></div>
-                            <div class="text-sm font-medium text-white">Leaderboard</div>
-                            <div class="text-xs text-gray-400">Developer paling aktif</div>
-                        </div>
-                        <div class="p-3 rounded-xl bg-white/5 border border-white/5 text-center">
-                            <div class="text-2xl text-pink-400 mb-1"><i class="fa-solid fa-rocket"></i></div>
-                            <div class="text-sm font-medium text-white">Startup Ready</div>
-                            <div class="text-xs text-gray-400">Platform global</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Tech Stack -->
-            <div class="glass-card p-5 text-center">
-                <h3 class="text-sm font-medium text-gray-400 mb-3">TECHNOLOGY STACK</h3>
-                <div class="flex flex-wrap justify-center gap-3 text-sm text-gray-300">
-                    <span class="px-3 py-1.5 rounded-full bg-white/5 border border-white/5">Next.js</span>
-                    <span class="px-3 py-1.5 rounded-full bg-white/5 border border-white/5">TypeScript</span>
-                    <span class="px-3 py-1.5 rounded-full bg-white/5 border border-white/5">Tailwind CSS</span>
-                    <span class="px-3 py-1.5 rounded-full bg-white/5 border border-white/5">Nimiq Pay API</span>
-                    <span class="px-3 py-1.5 rounded-full bg-white/5 border border-white/5">GitHub API</span>
-                    <span class="px-3 py-1.5 rounded-full bg-white/5 border border-white/5">AI (OpenAI)</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- ═══ VIEW: BOUNTIES ═══ -->
-        <div id="view-bounties" class="space-y-6 hidden">
-            <div class="flex items-center justify-between flex-wrap gap-3">
-                <h2 class="text-2xl font-bold text-white">Semua Bounty</h2>
-                <button onclick="openCreateModal()" class="btn-primary text-sm flex items-center gap-2">
-                    <i class="fa-solid fa-plus"></i> Buat Bounty
-                </button>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <!-- Bounty cards -->
-                <div class="glass-card p-5 cursor-pointer hover:border-purple-500/30 transition" onclick="openDetail('Fix login bug on /api/auth', 'nimiq / nimiq-explorer', 100, 'Open', 'Ada error saat user login dengan 2FA kadang gagal verifikasi.')">
-                    <div class="flex items-start justify-between">
-                        <div>
-                            <div class="text-white font-semibold">Fix login bug on /api/auth</div>
-                            <div class="text-sm text-gray-400">nimiq / nimiq-explorer</div>
-                        </div>
-                        <span class="badge badge-open"><i class="fa-regular fa-circle"></i> Open</span>
-                    </div>
-                    <div class="mt-3 flex items-center justify-between">
-                        <span class="text-emerald-400 font-bold text-lg">100 NIM</span>
-                        <span class="text-xs text-gray-500">Estimasi: 3 hari</span>
-                    </div>
-                </div>
-
-                <div class="glass-card p-5 cursor-pointer hover:border-purple-500/30 transition" onclick="openDetail('Add dark mode toggle', 'nimiq / nimiq-wallet', 80, 'Open', 'Tambahkan dark mode toggle di seluruh halaman wallet.')">
-                    <div class="flex items-start justify-between">
-                        <div>
-                            <div class="text-white font-semibold">Add dark mode toggle</div>
-                            <div class="text-sm text-gray-400">nimiq / nimiq-wallet</div>
-                        </div>
-                        <span class="badge badge-open"><i class="fa-regular fa-circle"></i> Open</span>
-                    </div>
-                    <div class="mt-3 flex items-center justify-between">
-                        <span class="text-emerald-400 font-bold text-lg">80 NIM</span>
-                        <span class="text-xs text-gray-500">Estimasi: 2 hari</span>
-                    </div>
-                </div>
-
-                <div class="glass-card p-5 cursor-pointer hover:border-purple-500/30 transition" onclick="openDetail('Improve API documentation', 'nimiq / nimiq-core', 60, 'Open', 'Dokumentasi API kurang lengkap. Tambahkan contoh dan penjelasan.')">
-                    <div class="flex items-start justify-between">
-                        <div>
-                            <div class="text-white font-semibold">Improve API documentation</div>
-                            <div class="text-sm text-gray-400">nimiq / nimiq-core</div>
-                        </div>
-                        <span class="badge badge-open"><i class="fa-regular fa-circle"></i> Open</span>
-                    </div>
-                    <div class="mt-3 flex items-center justify-between">
-                        <span class="text-emerald-400 font-bold text-lg">60 NIM</span>
-                        <span class="text-xs text-gray-500">Estimasi: 1 hari</span>
-                    </div>
-                </div>
-
-                <div class="glass-card p-5 cursor-pointer hover:border-purple-500/30 transition" onclick="openDetail('Fix transaction pagination', 'nimiq / nimiq-explorer', 75, 'Completed', 'Pagination pada halaman transaksi tidak berjalan dengan benar.')">
-                    <div class="flex items-start justify-between">
-                        <div>
-                            <div class="text-white font-semibold">Fix transaction pagination</div>
-                            <div class="text-sm text-gray-400">nimiq / nimiq-explorer</div>
-                        </div>
-                        <span class="badge badge-paid"><i class="fa-solid fa-check"></i> Completed</span>
-                    </div>
-                    <div class="mt-3 flex items-center justify-between">
-                        <span class="text-emerald-400 font-bold text-lg">75 NIM</span>
-                        <span class="text-xs text-gray-500">Selesai 2 hari lalu</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- ═══ VIEW: DETAIL BOUNTY ═══ -->
-        <div id="view-detail" class="space-y-6 hidden">
-            <button onclick="navigateTo('bounties')" class="text-gray-400 hover:text-white transition flex items-center gap-2 text-sm">
-                <i class="fa-solid fa-arrow-left"></i> Kembali ke Bounties
-            </button>
-
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div class="lg:col-span-2 glass-card p-6">
-                    <div class="flex items-start justify-between flex-wrap gap-3">
-                        <div>
-                            <h2 id="detail-title" class="text-2xl font-bold text-white">Fix login bug on /api/auth</h2>
-                            <p id="detail-repo" class="text-gray-400 text-sm">nimiq / nimiq-explorer</p>
-                        </div>
-                        <span id="detail-status" class="badge badge-open"><i class="fa-regular fa-circle"></i> Open</span>
-                    </div>
-                    <p id="detail-desc" class="mt-4 text-gray-300 text-sm leading-relaxed">Ada error saat user login dengan 2FA kadang gagal verifikasi.</p>
-                    <div class="mt-6 flex flex-wrap gap-4 text-sm">
-                        <div><span class="text-gray-400">Reward</span> <span id="detail-reward" class="text-emerald-400 font-bold ml-2">100 NIM</span></div>
-                        <div><span class="text-gray-400">Estimasi</span> <span class="text-white ml-2">3 hari</span></div>
-                        <div><span class="text-gray-400">Difficulty</span> <span class="text-yellow-400 ml-2">Medium</span></div>
-                    </div>
-                    <div class="mt-6 p-4 rounded-xl bg-white/5 border border-white/5">
-                        <div class="flex items-center gap-2 text-sm text-gray-400"><i class="fa-solid fa-robot text-purple-400"></i> AI Review Summary</div>
-                        <div class="mt-2 text-gray-300 text-sm">PR ini menyelesaikan issue dengan baik. Perubahan sudah sesuai dan tidak menimbulkan bug baru.</div>
-                        <div class="mt-2 flex flex-wrap gap-2 text-xs">
-                            <span class="px-2 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Kode bersih</span>
-                            <span class="px-2 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Mengikuti struktur project</span>
-                            <span class="px-2 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Fix sesuai deskripsi issue</span>
-                        </div>
-                    </div>
-                    <div class="mt-4 p-4 rounded-xl bg-white/5 border border-white/5">
-                        <div class="flex items-center gap-2 text-sm text-gray-400"><i class="fa-solid fa-code-fork text-blue-400"></i> Pull Request</div>
-                        <div class="flex items-center justify-between mt-2">
-                            <div>
-                                <span class="text-white font-medium">ndra-dev</span>
-                                <span class="text-gray-400 text-sm ml-2">#512 Fix: handle 2FA verification error</span>
-                            </div>
-                            <span class="badge badge-open"><i class="fa-regular fa-clock"></i> Review</span>
-                        </div>
-                    </div>
-                    <div class="mt-6 flex gap-3">
-                        <button onclick="showPaymentSuccess()" class="btn-primary text-sm flex items-center gap-2">
-                            <i class="fa-solid fa-rocket"></i> Ambil Bounty
-                        </button>
-                        <button class="btn-outline text-sm">Lihat di GitHub</button>
-                    </div>
-                </div>
-
-                <div class="space-y-4">
+                <!-- Two columns -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Recent Activity -->
                     <div class="glass-card p-5">
-                        <h4 class="text-sm font-medium text-gray-400 mb-3">Pembayaran</h4>
-                        <div class="space-y-2 text-sm">
-                            <div class="flex justify-between"><span class="text-gray-400">Status</span><span class="text-emerald-400"><i class="fa-solid fa-check-circle"></i> Siap</span></div>
-                            <div class="flex justify-between"><span class="text-gray-400">Escrow</span><span class="text-white">100 NIM</span></div>
-                            <div class="flex justify-between"><span class="text-gray-400">Wallet</span><span class="text-white font-mono text-xs">NQ14 5x6d ... 8n3k</span></div>
+                        <h3 class="text-sm font-semibold text-[var(--text-secondary)] uppercase tracking-wider mb-4">Recent Activity</h3>
+                        <div class="space-y-3">
+                            <div class="flex items-start gap-3 p-2 rounded-lg hover:bg-white/5 transition">
+                                <div class="w-8 h-8 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 flex-shrink-0"><i class="fa-solid fa-check"></i></div>
+                                <div>
+                                    <div class="text-sm">PR #512 merged — <span class="text-[var(--color-success)]">+75 NIM</span></div>
+                                    <div class="text-xs text-[var(--text-secondary)]">2 hours ago</div>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3 p-2 rounded-lg hover:bg-white/5 transition">
+                                <div class="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 flex-shrink-0"><i class="fa-solid fa-code-fork"></i></div>
+                                <div>
+                                    <div class="text-sm">New PR #514 — <span class="text-blue-400">AI Review</span></div>
+                                    <div class="text-xs text-[var(--text-secondary)]">5 hours ago</div>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3 p-2 rounded-lg hover:bg-white/5 transition">
+                                <div class="w-8 h-8 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400 flex-shrink-0"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+                                <div>
+                                    <div class="text-sm">AI generated 3 new bounties</div>
+                                    <div class="text-xs text-[var(--text-secondary)]">1 day ago</div>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3 p-2 rounded-lg hover:bg-white/5 transition">
+                                <div class="w-8 h-8 rounded-full bg-yellow-500/20 flex items-center justify-center text-yellow-400 flex-shrink-0"><i class="fa-solid fa-coins"></i></div>
+                                <div>
+                                    <div class="text-sm">Payment received — <span class="text-[var(--color-success)]">+50 NIM</span></div>
+                                    <div class="text-xs text-[var(--text-secondary)]">2 days ago</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
+
+                    <!-- AI Insights Panel -->
                     <div class="glass-card p-5">
-                        <h4 class="text-sm font-medium text-gray-400 mb-3">Kontributor</h4>
-                        <div class="flex items-center gap-3">
-                            <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-blue-500 to-purple-500 flex items-center justify-center text-white font-bold text-xs">JD</div>
+                        <h3 class="text-sm font-semibold text-[var(--text-secondary)] uppercase tracking-wider mb-4">AI Insights</h3>
+                        <div class="space-y-3">
                             <div>
-                                <div class="text-white text-sm font-medium">John Doe</div>
-                                <div class="text-xs text-gray-400">Developer</div>
+                                <div class="flex justify-between text-sm"><span>Repository Health</span><span class="text-[var(--color-success)]">89%</span></div>
+                                <div class="w-full h-1.5 bg-white/5 rounded-full mt-1 overflow-hidden"><div class="h-full bg-[var(--color-success)] rounded-full" style="width:89%"></div></div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-sm"><span>Technical Debt</span><span class="text-[var(--color-warning)]">Low</span></div>
+                                <div class="w-full h-1.5 bg-white/5 rounded-full mt-1 overflow-hidden"><div class="h-full bg-[var(--color-warning)] rounded-full" style="width:25%"></div></div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-sm"><span>Security Risk</span><span class="text-[var(--color-success)]">Low</span></div>
+                                <div class="w-full h-1.5 bg-white/5 rounded-full mt-1 overflow-hidden"><div class="h-full bg-[var(--color-success)] rounded-full" style="width:15%"></div></div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-sm"><span>Code Quality</span><span class="text-[var(--color-success)]">94%</span></div>
+                                <div class="w-full h-1.5 bg-white/5 rounded-full mt-1 overflow-hidden"><div class="h-full bg-[var(--color-success)] rounded-full" style="width:94%"></div></div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-sm"><span>Test Coverage</span><span class="text-[var(--color-warning)]">72%</span></div>
+                                <div class="w-full h-1.5 bg-white/5 rounded-full mt-1 overflow-hidden"><div class="h-full bg-[var(--color-warning)] rounded-full" style="width:72%"></div></div>
+                            </div>
+                        </div>
+                        <div class="mt-4 p-3 rounded-xl bg-purple-500/10 border border-purple-500/20 text-xs text-purple-300 flex items-center gap-2">
+                            <i class="fa-solid fa-lightbulb"></i> AI suggests improving test coverage for auth module.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Repositories Overview -->
+                <div class="glass-card p-5 mt-6">
+                    <h3 class="text-sm font-semibold text-[var(--text-secondary)] uppercase tracking-wider mb-4">Repository Overview</h3>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr><th>Repository</th><th class="hide-mobile">Language</th><th>Stars</th><th>Forks</th><th class="hide-mobile">Issues</th><th>AI Health</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td class="font-medium">nimiq-explorer</td><td class="hide-mobile">TypeScript</td><td>1.2k</td><td>89</td><td class="hide-mobile">23</td><td><span class="text-[var(--color-success)]">92%</span></td></tr>
+                                <tr><td class="font-medium">nimiq-wallet</td><td class="hide-mobile">JavaScript</td><td>856</td><td>64</td><td class="hide-mobile">17</td><td><span class="text-[var(--color-success)]">88%</span></td></tr>
+                                <tr><td class="font-medium">nimiq-core</td><td class="hide-mobile">Rust</td><td>2.1k</td><td>156</td><td class="hide-mobile">41</td><td><span class="text-[var(--color-warning)]">76%</span></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ─── PAGE: REPOSITORIES ─── -->
+            <section id="page-repositories" class="page">
+                <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+                    <h1 class="text-2xl lg:text-3xl font-bold">Repositories</h1>
+                    <button class="btn-primary"><i class="fa-solid fa-plus"></i> Import Repository</button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div class="glass-card p-5 hover:border-[var(--color-primary)]/30 transition">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <div class="font-semibold flex items-center gap-2"><i class="fa-brands fa-github text-[var(--text-secondary)]"></i> nimiq-explorer</div>
+                                <div class="text-sm text-[var(--text-secondary)]">nimiq / nimiq-explorer</div>
+                            </div>
+                            <span class="badge badge-open"><i class="fa-regular fa-circle"></i> Active</span>
+                        </div>
+                        <div class="mt-3 flex flex-wrap gap-3 text-xs text-[var(--text-secondary)]">
+                            <span><i class="fa-solid fa-circle text-blue-400"></i> TypeScript</span>
+                            <span><i class="fa-regular fa-star"></i> 1.2k</span>
+                            <span><i class="fa-regular fa-code-fork"></i> 89</span>
+                        </div>
+                        <div class="mt-3 flex gap-2">
+                            <button class="text-xs bg-white/5 px-3 py-1 rounded-full hover:bg-white/10 transition">View</button>
+                            <button class="text-xs bg-white/5 px-3 py-1 rounded-full hover:bg-white/10 transition">Analyze</button>
+                        </div>
+                    </div>
+                    <div class="glass-card p-5 hover:border-[var(--color-primary)]/30 transition">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <div class="font-semibold flex items-center gap-2"><i class="fa-brands fa-github text-[var(--text-secondary)]"></i> nimiq-wallet</div>
+                                <div class="text-sm text-[var(--text-secondary)]">nimiq / nimiq-wallet</div>
+                            </div>
+                            <span class="badge badge-in-progress"><i class="fa-regular fa-clock"></i> Analyzing</span>
+                        </div>
+                        <div class="mt-3 flex flex-wrap gap-3 text-xs text-[var(--text-secondary)]">
+                            <span><i class="fa-solid fa-circle text-yellow-400"></i> JavaScript</span>
+                            <span><i class="fa-regular fa-star"></i> 856</span>
+                            <span><i class="fa-regular fa-code-fork"></i> 64</span>
+                        </div>
+                        <div class="mt-3 flex gap-2">
+                            <button class="text-xs bg-white/5 px-3 py-1 rounded-full hover:bg-white/10 transition">View</button>
+                            <button class="text-xs bg-white/5 px-3 py-1 rounded-full hover:bg-white/10 transition">Analyze</button>
+                        </div>
+                    </div>
+                    <div class="glass-card p-5 hover:border-[var(--color-primary)]/30 transition">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <div class="font-semibold flex items-center gap-2"><i class="fa-brands fa-github text-[var(--text-secondary)]"></i> nimiq-core</div>
+                                <div class="text-sm text-[var(--text-secondary)]">nimiq / nimiq-core</div>
+                            </div>
+                            <span class="badge badge-review"><i class="fa-regular fa-circle-check"></i> Synced</span>
+                        </div>
+                        <div class="mt-3 flex flex-wrap gap-3 text-xs text-[var(--text-secondary)]">
+                            <span><i class="fa-solid fa-circle text-purple-400"></i> Rust</span>
+                            <span><i class="fa-regular fa-star"></i> 2.1k</span>
+                            <span><i class="fa-regular fa-code-fork"></i> 156</span>
+                        </div>
+                        <div class="mt-3 flex gap-2">
+                            <button class="text-xs bg-white/5 px-3 py-1 rounded-full hover:bg-white/10 transition">View</button>
+                            <button class="text-xs bg-white/5 px-3 py-1 rounded-full hover:bg-white/10 transition">Analyze</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ─── PAGE: AI GENERATOR ─── -->
+            <section id="page-ai-generator" class="page">
+                <h1 class="text-2xl lg:text-3xl font-bold mb-2">AI Bounty Generator</h1>
+                <p class="text-[var(--text-secondary)] text-sm mb-6">Analyze repositories and automatically generate bounties with AI.</p>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Main Card -->
+                    <div class="lg:col-span-2 glass-card p-6">
+                        <div class="space-y-4">
+                            <div>
+                                <label class="text-sm text-[var(--text-secondary)] block mb-1">Repository URL</label>
+                                <div class="flex gap-2">
+                                    <input type="text" placeholder="https://github.com/nimiq/nimiq-explorer" class="flex-1 bg-white/5 border border-[var(--border-color)] rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-[var(--color-primary)]/50 transition" />
+                                    <button class="btn-primary text-sm"><i class="fa-solid fa-magnifying-glass"></i> Analyze</button>
+                                </div>
+                            </div>
+                            <div class="p-4 rounded-xl bg-white/5 border border-[var(--border-color)]">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400"><i class="fa-solid fa-robot fa-lg"></i></div>
+                                    <div>
+                                        <div class="text-sm font-medium">AI Scan in progress...</div>
+                                        <div class="text-xs text-[var(--text-secondary)]">Analyzing repository structure, dependencies, and issues</div>
+                                    </div>
+                                    <div class="ml-auto text-xs text-[var(--text-secondary)] animate-pulse"><i class="fa-solid fa-spinner fa-spin"></i> 45%</div>
+                                </div>
+                                <div class="w-full h-1 bg-white/5 rounded-full mt-3 overflow-hidden"><div class="h-full bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-secondary)] rounded-full" style="width:45%"></div></div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-3 text-sm">
+                                <div class="p-3 rounded-xl bg-white/5 border border-[var(--border-color)]">
+                                    <div class="text-[var(--text-secondary)]">Repository Health</div>
+                                    <div class="font-semibold text-[var(--color-success)]">89%</div>
+                                </div>
+                                <div class="p-3 rounded-xl bg-white/5 border border-[var(--border-color)]">
+                                    <div class="text-[var(--text-secondary)]">Technical Debt</div>
+                                    <div class="font-semibold text-[var(--color-warning)]">Low</div>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-medium mb-2">Suggested Bounties</h4>
+                                <div class="space-y-2">
+                                    <div class="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-[var(--border-color)]">
+                                        <div>
+                                            <div class="text-sm font-medium">Fix authentication bug</div>
+                                            <div class="text-xs text-[var(--text-secondary)]">Difficulty: Medium · 8 hrs</div>
+                                        </div>
+                                        <div class="text-right">
+                                            <div class="text-sm font-bold text-[var(--color-success)]">50 NIM</div>
+                                            <button class="text-xs text-[var(--color-primary)] hover:underline">Generate</button>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-[var(--border-color)]">
+                                        <div>
+                                            <div class="text-sm font-medium">Add dark mode support</div>
+                                            <div class="text-xs text-[var(--text-secondary)]">Difficulty: Easy · 4 hrs</div>
+                                        </div>
+                                        <div class="text-right">
+                                            <div class="text-sm font-bold text-[var(--color-success)]">30 NIM</div>
+                                            <button class="text-xs text-[var(--color-primary)] hover:underline">Generate</button>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-[var(--border-color)]">
+                                        <div>
+                                            <div class="text-sm font-medium">Optimize database queries</div>
+                                            <div class="text-xs text-[var(--text-secondary)]">Difficulty: Hard · 12 hrs</div>
+                                        </div>
+                                        <div class="text-right">
+                                            <div class="text-sm font-bold text-[var(--color-success)]">80 NIM</div>
+                                            <button class="text-xs text-[var(--color-primary)] hover:underline">Generate</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="btn-primary w-full justify-center"><i class="fa-solid fa-wand-magic-sparkles"></i> Generate All Bounties</button>
+                        </div>
+                    </div>
+
+                    <!-- Sidebar -->
+                    <div class="space-y-4">
+                        <div class="glass-card p-5">
+                            <h4 class="text-sm font-medium mb-3">Quick Stats</h4>
+                            <div class="space-y-2 text-sm">
+                                <div class="flex justify-between"><span class="text-[var(--text-secondary)]">Total Issues</span><span>43</span></div>
+                                <div class="flex justify-between"><span class="text-[var(--text-secondary)]">Open Issues</span><span>12</span></div>
+                                <div class="flex justify-between"><span class="text-[var(--text-secondary)]">AI Bounties</span><span>8</span></div>
+                                <div class="flex justify-between"><span class="text-[var(--text-secondary)]">Total Rewards</span><span class="text-[var(--color-success)]">520 NIM</span></div>
+                            </div>
+                        </div>
+                        <div class="glass-card p-5">
+                            <h4 class="text-sm font-medium mb-3">AI Recommendations</h4>
+                            <div class="space-y-2 text-xs text-[var(--text-secondary)]">
+                                <div class="flex items-start gap-2"><i class="fa-solid fa-circle-check text-[var(--color-success)] mt-0.5"></i> Focus on auth module security</div>
+                                <div class="flex items-start gap-2"><i class="fa-solid fa-circle-check text-[var(--color-success)] mt-0.5"></i> Add unit tests for API</div>
+                                <div class="flex items-start gap-2"><i class="fa-solid fa-circle-check text-[var(--color-success)] mt-0.5"></i> Refactor payment service</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ─── PAGE: BOUNTIES ─── -->
+            <section id="page-bounties" class="page">
+                <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+                    <h1 class="text-2xl lg:text-3xl font-bold">Bounty Marketplace</h1>
+                    <button class="btn-primary"><i class="fa-solid fa-plus"></i> New Bounty</button>
+                </div>
+                <div class="glass-card p-0 overflow-hidden">
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr><th>Issue</th><th>Repository</th><th>Difficulty</th><th>Reward</th><th class="hide-mobile">Priority</th><th class="hide-mobile">Deadline</th><th>Status</th><th></th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td class="font-medium">Fix login bug</td><td>nimiq-explorer</td><td><span class="text-[var(--color-warning)]">Medium</span></td><td class="text-[var(--color-success)] font-bold">100 NIM</td><td class="hide-mobile"><span class="text-red-400">High</span></td><td class="hide-mobile">7 days</td><td><span class="badge badge-open"><i class="fa-regular fa-circle"></i> Open</span></td><td><button class="text-xs bg-[var(--color-primary)]/20 text-[var(--color-primary)] px-3 py-1 rounded-full hover:bg-[var(--color-primary)]/30 transition">Apply</button></td></tr>
+                                <tr><td class="font-medium">Dark mode toggle</td><td>nimiq-wallet</td><td><span class="text-[var(--color-success)]">Easy</span></td><td class="text-[var(--color-success)] font-bold">30 NIM</td><td class="hide-mobile"><span class="text-yellow-400">Medium</span></td><td class="hide-mobile">5 days</td><td><span class="badge badge-open"><i class="fa-regular fa-circle"></i> Open</span></td><td><button class="text-xs bg-[var(--color-primary)]/20 text-[var(--color-primary)] px-3 py-1 rounded-full hover:bg-[var(--color-primary)]/30 transition">Apply</button></td></tr>
+                                <tr><td class="font-medium">Database optimization</td><td>nimiq-core</td><td><span class="text-red-400">Hard</span></td><td class="text-[var(--color-success)] font-bold">80 NIM</td><td class="hide-mobile"><span class="text-red-400">High</span></td><td class="hide-mobile">10 days</td><td><span class="badge badge-in-progress"><i class="fa-regular fa-clock"></i> In Progress</span></td><td><button class="text-xs bg-white/10 text-[var(--text-secondary)] px-3 py-1 rounded-full cursor-not-allowed" disabled>Applied</button></td></tr>
+                                <tr><td class="font-medium">Update README</td><td>nimiq-sdk</td><td><span class="text-[var(--color-success)]">Easy</span></td><td class="text-[var(--color-success)] font-bold">20 NIM</td><td class="hide-mobile"><span class="text-[var(--text-secondary)]">Low</span></td><td class="hide-mobile">3 days</td><td><span class="badge badge-closed"><i class="fa-regular fa-circle-check"></i> Closed</span></td><td><button class="text-xs bg-white/10 text-[var(--text-secondary)] px-3 py-1 rounded-full cursor-not-allowed" disabled>Completed</button></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ─── PAGE: PAYMENTS ─── -->
+            <section id="page-payments" class="page">
+                <h1 class="text-2xl lg:text-3xl font-bold mb-6">Payments</h1>
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6">
+                    <div class="glass-card p-4"><div class="text-sm text-[var(--text-secondary)]">Total Paid</div><div class="text-2xl font-bold font-space">1,240 NIM</div></div>
+                    <div class="glass-card p-4"><div class="text-sm text-[var(--text-secondary)]">Pending Escrow</div><div class="text-2xl font-bold font-space text-[var(--color-warning)]">320 NIM</div></div>
+                    <div class="glass-card p-4"><div class="text-sm text-[var(--text-secondary)]">Transactions</div><div class="text-2xl font-bold font-space">47</div></div>
+                </div>
+                <div class="glass-card p-0 overflow-hidden">
+                    <div class="table-wrap">
+                        <table>
+                            <thead><tr><th>ID</th><th>Bounty</th><th>Amount</th><th>Status</th><th>Date</th></tr></thead>
+                            <tbody>
+                                <tr><td class="text-xs font-mono text-[var(--text-secondary)]">#TX-001</td><td>Fix login bug</td><td class="text-[var(--color-success)] font-bold">+100 NIM</td><td><span class="badge badge-open"><i class="fa-solid fa-check"></i> Completed</span></td><td class="text-xs text-[var(--text-secondary)]">2 hours ago</td></tr>
+                                <tr><td class="text-xs font-mono text-[var(--text-secondary)]">#TX-002</td><td>Dark mode toggle</td><td class="text-[var(--color-success)] font-bold">+30 NIM</td><td><span class="badge badge-open"><i class="fa-solid fa-check"></i> Completed</span></td><td class="text-xs text-[var(--text-secondary)]">1 day ago</td></tr>
+                                <tr><td class="text-xs font-mono text-[var(--text-secondary)]">#TX-003</td><td>Database optimization</td><td class="text-[var(--color-warning)] font-bold">-80 NIM</td><td><span class="badge badge-in-progress"><i class="fa-regular fa-clock"></i> Escrow</span></td><td class="text-xs text-[var(--text-secondary)]">3 days ago</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ─── PAGE: WALLET ─── -->
+            <section id="page-wallet" class="page">
+                <h1 class="text-2xl lg:text-3xl font-bold mb-6">Wallet</h1>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="glass-card p-6">
+                        <div class="text-sm text-[var(--text-secondary)]">Balance</div>
+                        <div class="text-4xl font-bold font-space mt-1">1,250 <span class="text-xl text-[var(--text-secondary)]">NIM</span></div>
+                        <div class="text-sm text-[var(--text-secondary)] mt-1">≈ $320.50 USD</div>
+                        <div class="mt-4 flex gap-3">
+                            <button class="btn-primary text-sm"><i class="fa-solid fa-arrow-up"></i> Send</button>
+                            <button class="btn-secondary text-sm"><i class="fa-solid fa-arrow-down"></i> Receive</button>
+                        </div>
+                        <div class="mt-4 p-3 rounded-xl bg-white/5 border border-[var(--border-color)]">
+                            <div class="text-xs text-[var(--text-secondary)]">Wallet Address</div>
+                            <div class="font-mono text-sm text-white truncate">NQ14 5x6d 7k8j 9n3k 2m4p 8q5r 6t7u 8v9w 0x1y</div>
+                            <button class="text-xs text-[var(--color-primary)] mt-1 hover:underline">Copy</button>
+                        </div>
+                    </div>
+                    <div class="glass-card p-6">
+                        <h4 class="text-sm font-medium mb-4">Recent Transactions</h4>
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center p-2 rounded-lg bg-white/5"><div><div class="text-sm">Fix login bug</div><div class="text-xs text-[var(--text-secondary)]">2 hours ago</div></div><div class="text-[var(--color-success)] font-bold">+100 NIM</div></div>
+                            <div class="flex justify-between items-center p-2 rounded-lg bg-white/5"><div><div class="text-sm">Dark mode toggle</div><div class="text-xs text-[var(--text-secondary)]">1 day ago</div></div><div class="text-[var(--color-success)] font-bold">+30 NIM</div></div>
+                            <div class="flex justify-between items-center p-2 rounded-lg bg-white/5"><div><div class="text-sm">Database optimization</div><div class="text-xs text-[var(--text-secondary)]">3 days ago</div></div><div class="text-[var(--color-warning)] font-bold">-80 NIM</div></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ─── PAGE: LEADERBOARD ─── -->
+            <section id="page-leaderboard" class="page">
+                <h1 class="text-2xl lg:text-3xl font-bold mb-6">Leaderboard</h1>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="glass-card p-5">
+                        <h3 class="text-sm font-semibold text-[var(--text-secondary)] uppercase tracking-wider mb-4">Top Developers</h3>
+                        <div class="space-y-3">
+                            <div class="flex items-center gap-3 p-2 rounded-lg bg-white/5">
+                                <span class="text-sm font-bold text-[var(--text-secondary)] w-6">#1</span>
+                                <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-yellow-500 to-orange-500 flex items-center justify-center text-white text-xs font-bold">JD</div>
+                                <span class="flex-1 font-medium">John Doe</span>
+                                <span class="text-[var(--color-success)] font-bold font-space">850 NIM</span>
+                            </div>
+                            <div class="flex items-center gap-3 p-2 rounded-lg hover:bg-white/5 transition">
+                                <span class="text-sm font-bold text-[var(--text-secondary)] w-6">#2</span>
+                                <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-blue-500 to-purple-500 flex items-center justify-center text-white text-xs font-bold">AS</div>
+                                <span class="flex-1 font-medium">Alice Smith</span>
+                                <span class="text-[var(--color-success)] font-bold font-space">620 NIM</span>
+                            </div>
+                            <div class="flex items-center gap-3 p-2 rounded-lg hover:bg-white/5 transition">
+                                <span class="text-sm font-bold text-[var(--text-secondary)] w-6">#3</span>
+                                <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-emerald-500 to-teal-500 flex items-center justify-center text-white text-xs font-bold">RJ</div>
+                                <span class="flex-1 font-medium">Robert Johnson</span>
+                                <span class="text-[var(--color-success)] font-bold font-space">490 NIM</span>
+                            </div>
+                            <div class="flex items-center gap-3 p-2 rounded-lg hover:bg-white/5 transition">
+                                <span class="text-sm font-bold text-[var(--text-secondary)] w-6">#4</span>
+                                <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-pink-500 to-rose-500 flex items-center justify-center text-white text-xs font-bold">MW</div>
+                                <span class="flex-1 font-medium">Maria Wilson</span>
+                                <span class="text-[var(--color-success)] font-bold font-space">380 NIM</span>
                             </div>
                         </div>
                     </div>
                     <div class="glass-card p-5">
-                        <h4 class="text-sm font-medium text-gray-400 mb-3">Teknologi</h4>
-                        <div class="flex flex-wrap gap-2 text-xs">
-                            <span class="px-2 py-1 rounded-full bg-white/5 border border-white/5">TypeScript</span>
-                            <span class="px-2 py-1 rounded-full bg-white/5 border border-white/5">React</span>
-                            <span class="px-2 py-1 rounded-full bg-white/5 border border-white/5">Next.js</span>
+                        <h3 class="text-sm font-semibold text-[var(--text-secondary)] uppercase tracking-wider mb-4">Top Organizations</h3>
+                        <div class="space-y-3">
+                            <div class="flex items-center gap-3 p-2 rounded-lg bg-white/5">
+                                <span class="text-sm font-bold text-[var(--text-secondary)] w-6">#1</span>
+                                <i class="fa-brands fa-github text-xl text-[var(--text-secondary)]"></i>
+                                <span class="flex-1 font-medium">Nimiq Labs</span>
+                                <span class="text-[var(--color-success)] font-bold font-space">2.4k NIM</span>
+                            </div>
+                            <div class="flex items-center gap-3 p-2 rounded-lg hover:bg-white/5 transition">
+                                <span class="text-sm font-bold text-[var(--text-secondary)] w-6">#2</span>
+                                <i class="fa-brands fa-github text-xl text-[var(--text-secondary)]"></i>
+                                <span class="flex-1 font-medium">OpenSourceDAO</span>
+                                <span class="text-[var(--color-success)] font-bold font-space">1.8k NIM</span>
+                            </div>
+                            <div class="flex items-center gap-3 p-2 rounded-lg hover:bg-white/5 transition">
+                                <span class="text-sm font-bold text-[var(--text-secondary)] w-6">#3</span>
+                                <i class="fa-brands fa-github text-xl text-[var(--text-secondary)]"></i>
+                                <span class="flex-1 font-medium">Web3 Foundation</span>
+                                <span class="text-[var(--color-success)] font-bold font-space">1.2k NIM</span>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
+            </section>
 
-        <!-- ═══ MODAL: CREATE BOUNTY ═══ -->
-        <div id="createModal" class="modal-overlay" onclick="if(event.target===this)closeCreateModal()">
-            <div class="modal-box">
-                <div class="flex items-center justify-between mb-5">
-                    <h2 class="text-xl font-bold text-white"><i class="fa-solid fa-plus-circle text-blue-400 mr-2"></i>Buat Bounty</h2>
-                    <button onclick="closeCreateModal()" class="text-gray-400 hover:text-white text-xl">&times;</button>
+            <!-- ─── PAGE: ANALYTICS ─── -->
+            <section id="page-analytics" class="page">
+                <h1 class="text-2xl lg:text-3xl font-bold mb-6">Analytics</h1>
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                    <div class="glass-card p-4"><div class="text-sm text-[var(--text-secondary)]">Revenue</div><div class="text-xl font-bold font-space">1,240 NIM</div><div class="text-xs text-[var(--color-success)]"><i class="fa-solid fa-arrow-up"></i> +23%</div></div>
+                    <div class="glass-card p-4"><div class="text-sm text-[var(--text-secondary)]">Bounties Created</div><div class="text-xl font-bold font-space">156</div><div class="text-xs text-[var(--color-success)]"><i class="fa-solid fa-arrow-up"></i> +18%</div></div>
+                    <div class="glass-card p-4"><div class="text-sm text-[var(--text-secondary)]">Developer Activity</div><div class="text-xl font-bold font-space">89</div><div class="text-xs text-[var(--color-success)]"><i class="fa-solid fa-arrow-up"></i> +12%</div></div>
+                    <div class="glass-card p-4"><div class="text-sm text-[var(--text-secondary)]">AI Generated</div><div class="text-xl font-bold font-space">67</div><div class="text-xs text-[var(--color-success)]"><i class="fa-solid fa-arrow-up"></i> +34%</div></div>
                 </div>
-                <form id="createBountyForm" onsubmit="handleCreateBounty(event)" class="space-y-4">
-                    <div>
-                        <label class="text-sm text-gray-400 block mb-1">Repository</label>
-                        <select class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-purple-500/50">
-                            <option value="nimiq/nimiq-explorer">nimiq / nimiq-explorer</option>
-                            <option value="nimiq/nimiq-wallet">nimiq / nimiq-wallet</option>
-                            <option value="nimiq/nimiq-core">nimiq / nimiq-core</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="text-sm text-gray-400 block mb-1">Pilih Issue</label>
-                        <select class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-purple-500/50">
-                            <option>#432 Fix login bug on /api/auth</option>
-                            <option>#435 Add dark mode toggle</option>
-                            <option>#440 Improve API documentation</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="text-sm text-gray-400 block mb-1">Deskripsi</label>
-                        <textarea rows="3" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-purple-500/50" placeholder="Ada error saat user login dengan 2FA kadang gagal verifikasi."></textarea>
-                    </div>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="text-sm text-gray-400 block mb-1">Bounty Amount</label>
-                            <input type="number" value="100" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-purple-500/50" />
-                        </div>
-                        <div>
-                            <label class="text-sm text-gray-400 block mb-1">Estimasi Waktu</label>
-                            <select class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-purple-500/50">
-                                <option>1 hari</option>
-                                <option selected>3 hari</option>
-                                <option>5 hari</option>
-                                <option>7 hari</option>
-                            </select>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="glass-card p-5">
+                        <h4 class="text-sm font-medium mb-3">Revenue Trend</h4>
+                        <div class="h-48 flex items-end gap-1">
+                            <div class="flex-1 flex flex-col items-center gap-1"><div class="w-full bg-[var(--color-primary)]/60 rounded-t" style="height:20%"></div><div class="text-xs text-[var(--text-secondary)]">Jan</div></div>
+                            <div class="flex-1 flex flex-col items-center gap-1"><div class="w-full bg-[var(--color-primary)]/60 rounded-t" style="height:35%"></div><div class="text-xs text-[var(--text-secondary)]">Feb</div></div>
+                            <div class="flex-1 flex flex-col items-center gap-1"><div class="w-full bg-[var(--color-primary)]/60 rounded-t" style="height:28%"></div><div class="text-xs text-[var(--text-secondary)]">Mar</div></div>
+                            <div class="flex-1 flex flex-col items-center gap-1"><div class="w-full bg-[var(--color-primary)]/60 rounded-t" style="height:55%"></div><div class="text-xs text-[var(--text-secondary)]">Apr</div></div>
+                            <div class="flex-1 flex flex-col items-center gap-1"><div class="w-full bg-[var(--color-primary)]/60 rounded-t" style="height:48%"></div><div class="text-xs text-[var(--text-secondary)]">May</div></div>
+                            <div class="flex-1 flex flex-col items-center gap-1"><div class="w-full bg-gradient-to-t from-[var(--color-primary)] to-[var(--color-secondary)] rounded-t" style="height:78%"></div><div class="text-xs text-[var(--text-secondary)]">Jun</div></div>
                         </div>
                     </div>
-                    <div class="flex gap-3 pt-2">
-                        <button type="submit" class="flex-1 btn-primary text-sm"><i class="fa-solid fa-paper-plane mr-2"></i>Publish Bounty</button>
-                        <button type="button" onclick="closeCreateModal()" class="btn-outline text-sm">Batal</button>
+                    <div class="glass-card p-5">
+                        <h4 class="text-sm font-medium mb-3">Bounty Distribution</h4>
+                        <div class="space-y-2">
+                            <div><div class="flex justify-between text-sm"><span>Easy</span><span>35%</span></div><div class="w-full h-1.5 bg-white/5 rounded-full mt-1 overflow-hidden"><div class="h-full bg-[var(--color-success)] rounded-full" style="width:35%"></div></div></div>
+                            <div><div class="flex justify-between text-sm"><span>Medium</span><span>42%</span></div><div class="w-full h-1.5 bg-white/5 rounded-full mt-1 overflow-hidden"><div class="h-full bg-[var(--color-warning)] rounded-full" style="width:42%"></div></div></div>
+                            <div><div class="flex justify-between text-sm"><span>Hard</span><span>23%</span></div><div class="w-full h-1.5 bg-white/5 rounded-full mt-1 overflow-hidden"><div class="h-full bg-[var(--color-danger)] rounded-full" style="width:23%"></div></div></div>
+                        </div>
                     </div>
-                </form>
-                <div class="mt-4 p-3 rounded-xl bg-blue-500/10 border border-blue-500/20 text-xs text-blue-300 flex items-center gap-2">
-                    <i class="fa-solid fa-lightbulb"></i> Dana akan dikunci di escrow Nimiq Pay setelah bounty dibuat.
                 </div>
-            </div>
-        </div>
+            </section>
 
-        <!-- ═══ MODAL: PAYMENT SUCCESS ═══ -->
-        <div id="paymentSuccessModal" class="modal-overlay" onclick="if(event.target===this)closePaymentSuccess()">
-            <div class="modal-box text-center">
-                <div class="success-check text-6xl text-emerald-400 mb-4"><i class="fa-regular fa-circle-check"></i></div>
-                <h2 class="text-2xl font-bold text-white mb-2">Pembayaran Berhasil!</h2>
-                <p class="text-gray-400">Bounty telah dibayarkan ke wallet Anda.</p>
-                <div class="my-6 p-4 rounded-xl bg-white/5 border border-white/10 inline-block">
-                    <div class="text-sm text-gray-400">Jumlah</div>
-                    <div class="text-3xl font-bold text-emerald-400">100 <span class="text-lg font-medium text-gray-400">NIM</span></div>
-                    <div class="text-xs text-gray-500">≈ $25.60</div>
+            <!-- ─── PAGE: SETTINGS ─── -->
+            <section id="page-settings" class="page">
+                <h1 class="text-2xl lg:text-3xl font-bold mb-6">Settings</h1>
+                <div class="max-w-2xl space-y-4">
+                    <div class="glass-card p-5">
+                        <h4 class="text-sm font-medium mb-3">Profile</h4>
+                        <div class="space-y-3">
+                            <div><label class="text-sm text-[var(--text-secondary)] block mb-1">Display Name</label><input type="text" value="John Doe" class="w-full bg-white/5 border border-[var(--border-color)] rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-[var(--color-primary)]/50 transition" /></div>
+                            <div><label class="text-sm text-[var(--text-secondary)] block mb-1">Email</label><input type="email" value="john@codebounty.ai" class="w-full bg-white/5 border border-[var(--border-color)] rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-[var(--color-primary)]/50 transition" /></div>
+                            <button class="btn-primary text-sm">Save Changes</button>
+                        </div>
+                    </div>
+                    <div class="glass-card p-5">
+                        <h4 class="text-sm font-medium mb-3">Notifications</h4>
+                        <div class="space-y-2">
+                            <div class="flex items-center justify-between"><span class="text-sm">Email Notifications</span><div class="w-10 h-6 rounded-full bg-[var(--color-primary)] relative cursor-pointer"><div class="w-5 h-5 rounded-full bg-white absolute top-0.5 right-0.5 transition"></div></div></div>
+                            <div class="flex items-center justify-between"><span class="text-sm">Push Notifications</span><div class="w-10 h-6 rounded-full bg-white/10 relative cursor-pointer"><div class="w-5 h-5 rounded-full bg-white absolute top-0.5 left-0.5 transition"></div></div></div>
+                        </div>
+                    </div>
+                    <div class="glass-card p-5 border-red-500/20">
+                        <h4 class="text-sm font-medium text-red-400 mb-3">Danger Zone</h4>
+                        <button class="text-sm text-red-400 border border-red-500/30 px-4 py-2 rounded-full hover:bg-red-500/10 transition">Delete Account</button>
+                    </div>
                 </div>
-                <div class="text-sm text-gray-400 mt-2">Dikirim ke <span class="text-white font-mono">NQ14 5x6d ... 8n3k</span></div>
-                <div class="mt-6 flex gap-3 justify-center">
-                    <button onclick="closePaymentSuccess(); navigateTo('dashboard')" class="btn-primary text-sm">Lihat Dashboard</button>
-                    <button onclick="closePaymentSuccess()" class="btn-outline text-sm">Tutup</button>
-                </div>
-            </div>
-        </div>
+            </section>
 
+        </main>
     </div>
 
     <!-- ─── JAVASCRIPT ─── -->
     <script>
-        // ── State ──
-        let currentView = 'dashboard';
-        let demoInterval = null;
-        let demoStep = 0;
-
         // ── Navigation ──
-        function navigateTo(view) {
-            // Hide all views
-            document.querySelectorAll('[id^="view-"]').forEach(el => el.classList.add('hidden'));
+        const sidebarItems = document.querySelectorAll('.sidebar-item');
+        const pages = {
+            dashboard: document.getElementById('page-dashboard'),
+            repositories: document.getElementById('page-repositories'),
+            'ai-generator': document.getElementById('page-ai-generator'),
+            bounties: document.getElementById('page-bounties'),
+            payments: document.getElementById('page-payments'),
+            wallet: document.getElementById('page-wallet'),
+            leaderboard: document.getElementById('page-leaderboard'),
+            analytics: document.getElementById('page-analytics'),
+            settings: document.getElementById('page-settings'),
+        };
+
+        function navigateTo(pageId) {
+            // Hide all pages
+            Object.values(pages).forEach(p => p.classList.remove('active'));
 
             // Show target
-            const target = document.getElementById('view-' + view);
-            if (target) {
-                target.classList.remove('hidden');
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
-            currentView = view;
-        }
-
-        // ── Create Modal ──
-        function openCreateModal() {
-            document.getElementById('createModal').classList.add('show');
-            document.body.classList.add('modal-open');
-        }
-
-        function closeCreateModal() {
-            document.getElementById('createModal').classList.remove('show');
-            document.body.classList.remove('modal-open');
-        }
-
-        function handleCreateBounty(e) {
-            e.preventDefault();
-            closeCreateModal();
-            showToast('Bounty berhasil dibuat! Dana escrow terkunci.', 'success');
-        }
-
-        // ── Toast ──
-        function showToast(message, type = 'info') {
-            const colors = {
-                success: 'bg-emerald-500/20 border-emerald-500/30 text-emerald-300',
-                info: 'bg-blue-500/20 border-blue-500/30 text-blue-300',
-                warning: 'bg-yellow-500/20 border-yellow-500/30 text-yellow-300'
-            };
-            const toast = document.createElement('div');
-            toast.className =
-                `fixed bottom-6 left-1/2 -translate-x-1/2 z-50 ${colors[type]} backdrop-blur-lg border px-6 py-3 rounded-2xl text-sm shadow-2xl flex items-center gap-3`;
-            toast.innerHTML =
-                `<i class="fa-solid ${type === 'success' ? 'fa-check-circle' : type === 'info' ? 'fa-info-circle' : 'fa-triangle-exclamation'}"></i> ${message}`;
-            document.body.appendChild(toast);
-            setTimeout(() => toast.remove(), 4000);
-        }
-
-        // ── Detail ──
-        function openDetail(title, repo, reward, status, desc) {
-            document.getElementById('detail-title').textContent = title;
-            document.getElementById('detail-repo').textContent = repo;
-            document.getElementById('detail-reward').textContent = reward + ' NIM';
-            document.getElementById('detail-desc').textContent = desc;
-
-            const statusEl = document.getElementById('detail-status');
-            if (status === 'Open') {
-                statusEl.className = 'badge badge-open';
-                statusEl.innerHTML = '<i class="fa-regular fa-circle"></i> Open';
-            } else {
-                statusEl.className = 'badge badge-paid';
-                statusEl.innerHTML = '<i class="fa-solid fa-check"></i> Completed';
+            if (pages[pageId]) {
+                pages[pageId].classList.add('active');
             }
 
-            navigateTo('detail');
-        }
-
-        // ── Payment Success ──
-        function showPaymentSuccess() {
-            document.getElementById('paymentSuccessModal').classList.add('show');
-            document.body.classList.add('modal-open');
-        }
-
-        function closePaymentSuccess() {
-            document.getElementById('paymentSuccessModal').classList.remove('show');
-            document.body.classList.remove('modal-open');
-        }
-
-        // ── Demo 2 Menit ──
-        function startDemo() {
-            if (demoInterval) {
-                clearInterval(demoInterval);
-                demoInterval = null;
-                document.getElementById('demoProgress').classList.add('hidden');
-                document.getElementById('demoProgressBar').style.width = '0%';
-                demoStep = 0;
-                return;
-            }
-
-            const steps = [
-                { label: 'Buat Bounty (1 issue, 100 NIM)', progress: 14 },
-                { label: 'Developer Ambil Issue', progress: 28 },
-                { label: 'Kirim Pull Request', progress: 42 },
-                { label: 'AI Review (Score 92/100)', progress: 57 },
-                { label: 'Owner Approve', progress: 71 },
-                { label: 'Pembayaran Instan', progress: 85 },
-                { label: 'Bounty Dibayarkan!', progress: 100 },
-            ];
-
-            demoStep = 0;
-            const progressEl = document.getElementById('demoProgress');
-            const barEl = document.getElementById('demoProgressBar');
-            progressEl.classList.remove('hidden');
-            barEl.style.width = '0%';
-
-            showToast('🚀 Demo 2 Menit dimulai!', 'info');
-
-            demoInterval = setInterval(() => {
-                if (demoStep < steps.length) {
-                    const step = steps[demoStep];
-                    barEl.style.width = step.progress + '%';
-                    showToast(`⏳ ${step.label}`, 'info');
-                    demoStep++;
-                } else {
-                    clearInterval(demoInterval);
-                    demoInterval = null;
-                    setTimeout(() => {
-                        showPaymentSuccess();
-                        showToast('🎉 Demo selesai! Bounty telah dibayarkan.', 'success');
-                        document.getElementById('demoProgress').classList.add('hidden');
-                        document.getElementById('demoProgressBar').style.width = '0%';
-                    }, 600);
+            // Update sidebar
+            sidebarItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.dataset.page === pageId) {
+                    item.classList.add('active');
                 }
-            }, 1800);
+            });
 
-            // Tombol untuk menghentikan demo
-            const stopBtn = document.createElement('button');
-            stopBtn.id = 'stopDemoBtn';
-            stopBtn.className =
-                'fixed top-4 right-4 z-50 bg-red-500/20 backdrop-blur-lg border border-red-500/30 text-red-300 px-4 py-2 rounded-xl text-sm shadow-2xl flex items-center gap-2';
-            stopBtn.innerHTML = '<i class="fa-solid fa-stop"></i> Hentikan Demo';
-            stopBtn.onclick = function() {
-                if (demoInterval) {
-                    clearInterval(demoInterval);
-                    demoInterval = null;
-                    document.getElementById('demoProgress').classList.add('hidden');
-                    document.getElementById('demoProgressBar').style.width = '0%';
-                    showToast('⏹️ Demo dihentikan.', 'warning');
-                    this.remove();
-                }
-            };
-            document.body.appendChild(stopBtn);
-
-            // Cleanup when demo finishes
-            const originalClear = clearInterval;
-            const checkDemoDone = setInterval(() => {
-                if (!demoInterval && demoStep >= steps.length) {
-                    const btn = document.getElementById('stopDemoBtn');
-                    if (btn) btn.remove();
-                    clearInterval(checkDemoDone);
-                }
-            }, 500);
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // ── Keyboard shortcuts ──
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                closeCreateModal();
-                closePaymentSuccess();
+        sidebarItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const page = item.dataset.page;
+                if (page) navigateTo(page);
+            });
+        });
+
+        // ── Responsive sidebar collapse on mobile ──
+        // Already handled via CSS
+
+        // ── Button ripple effect ──
+        document.querySelectorAll('.btn-primary, .btn-secondary, .btn-success').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                const ripple = document.createElement('span');
+                ripple.style.cssText = `
+                        position: absolute;
+                        border-radius: 50%;
+                        background: rgba(255,255,255,0.2);
+                        width: 100px;
+                        height: 100px;
+                        transform: translate(-50%, -50%) scale(0);
+                        animation: rippleAnim 0.6s ease-out forwards;
+                        pointer-events: none;
+                    `;
+                const rect = this.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                ripple.style.left = x + 'px';
+                ripple.style.top = y + 'px';
+                this.style.position = 'relative';
+                this.style.overflow = 'hidden';
+                this.appendChild(ripple);
+                setTimeout(() => ripple.remove(), 600);
+            });
+        });
+
+        // ── Inject ripple animation ──
+        const styleSheet = document.createElement('style');
+        styleSheet.textContent = `
+                @keyframes rippleAnim {
+                    to { transform: translate(-50%, -50%) scale(4); opacity: 0; }
+                }
+            `;
+        document.head.appendChild(styleSheet);
+
+        // ── Handle "Apply" buttons in bounties ──
+        document.querySelectorAll('#page-bounties .table-wrap button').forEach(btn => {
+            if (!btn.disabled && btn.textContent.trim() === 'Apply') {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const row = this.closest('tr');
+                    const issue = row.querySelector('td:first-child')?.textContent || '';
+                    const reward = row.querySelector('td:nth-child(4)')?.textContent || '';
+                    alert(`✅ Applied for "${issue}" - ${reward}`);
+                    this.textContent = 'Applied';
+                    this.disabled = true;
+                    this.className =
+                        'text-xs bg-white/10 text-[var(--text-secondary)] px-3 py-1 rounded-full cursor-not-allowed';
+                });
             }
         });
 
-        // ── Bootstrap: show dashboard ──
-        navigateTo('dashboard');
+        // ── Handle "Generate" in AI Generator ──
+        document.querySelectorAll('#page-ai-generator .text-\\[var\\(--color-primary\\)\\]').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const parent = this.closest('.flex');
+                const title = parent.querySelector('.font-medium')?.textContent || '';
+                const reward = parent.querySelector('.font-bold')?.textContent || '';
+                alert(`✅ Generated bounty: ${title} - ${reward}`);
+            });
+        });
 
-        console.log('🚀 CodeBounty AI — Mini aplikasi siap!');
+        // ── Handle "Analyze" button in AI Generator ──
+        document.querySelector('#page-ai-generator .btn-primary .fa-magnifying-glass')?.closest('button')?.addEventListener(
+            'click', function(e) {
+                e.preventDefault();
+                const input = this.closest('.flex')?.querySelector('input');
+                if (input) {
+                    alert(`🔍 Analyzing repository: ${input.value || 'nimiq/nimiq-explorer'}`);
+                }
+            });
+
+        // ── Handle "Generate All Bounties" ──
+        document.querySelector('#page-ai-generator .btn-primary .fa-wand-magic-sparkles')?.closest('button')?.addEventListener(
+            'click', function(e) {
+                e.preventDefault();
+                alert('🤖 AI is generating bounties for all suggested issues...');
+            });
+
+        // ── Handle wallet copy ──
+        document.querySelector('#page-wallet .text-\\[var\\(--color-primary\\)\\]')?.addEventListener('click', function(e) {
+            const address = this.closest('.p-3')?.querySelector('.font-mono')?.textContent || '';
+            if (address) {
+                navigator.clipboard.writeText(address.trim()).then(() => {
+                    const original = this.textContent;
+                    this.textContent = '✅ Copied!';
+                    setTimeout(() => { this.textContent = original; }, 2000);
+                });
+            }
+        });
+
+        // ── Handle toggle switches in settings ──
+        document.querySelectorAll('#page-settings .relative.cursor-pointer').forEach(toggle => {
+            toggle.addEventListener('click', function() {
+                const isOn = this.classList.contains('bg-[var(--color-primary)]');
+                if (isOn) {
+                    this.classList.remove('bg-[var(--color-primary)]');
+                    this.classList.add('bg-white/10');
+                    const dot = this.querySelector('.absolute');
+                    if (dot) {
+                        dot.classList.remove('right-0.5');
+                        dot.classList.add('left-0.5');
+                    }
+                } else {
+                    this.classList.add('bg-[var(--color-primary)]');
+                    this.classList.remove('bg-white/10');
+                    const dot = this.querySelector('.absolute');
+                    if (dot) {
+                        dot.classList.remove('left-0.5');
+                        dot.classList.add('right-0.5');
+                    }
+                }
+            });
+        });
+
+        // ── Console branding ──
+        console.log('%c🚀 CodeBounty AI', 'font-size:24px;font-weight:800;color:#7C3AED;');
+        console.log('%cAI-Powered Open Source Collaboration Platform', 'font-size:14px;color:#94A3B8;');
+        console.log('%cBuilt with ❤️ using Next.js, Tailwind, and Nimiq Pay', 'font-size:12px;color:#94A3B8;');
+
+        // ── Keyboard shortcuts ──
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey || e.metaKey) {
+                const map = {
+                    '1': 'dashboard',
+                    '2': 'repositories',
+                    '3': 'ai-generator',
+                    '4': 'bounties',
+                    '5': 'payments',
+                    '6': 'wallet',
+                    '7': 'leaderboard',
+                    '8': 'analytics',
+                    '9': 'settings',
+                };
+                if (map[e.key]) {
+                    e.preventDefault();
+                    navigateTo(map[e.key]);
+                }
+            }
+        });
+
+        // Show tooltip for keyboard shortcuts on hover
+        console.log('⌨️ Keyboard shortcuts: Ctrl+1-9 to navigate');
     </script>
 
 </body>
