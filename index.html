@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CodeBounty AI – Earn Crypto by Solving GitHub Issues</title>
+
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com">
+    </script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <!-- Google Font (Inter) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
+
+    <style>
+        /* ─────────── Custom Styles ─────────── */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #0b0a12;
+            color: #f1f5f9;
+            min-height: 100vh;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1a1930;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #6366f1, #a855f7);
+            border-radius: 12px;
+        }
+
+        /* Glassmorphism base */
+        .glass {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 20px;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.035);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            transition: all 0.25s ease;
+        }
+        .glass-card:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.10);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Gradient text */
+        .gradient-text {
+            background: linear-gradient(135deg, #60a5fa, #a78bfa, #f472b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .gradient-border {
+            border-image: linear-gradient(135deg, #6366f1, #a855f7, #ec4899) 1;
+        }
+
+        /* Button primary */
+        .btn-primary {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: #fff;
+            font-weight: 600;
+            padding: 0.65rem 1.75rem;
+            border-radius: 9999px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.30);
+        }
+        .btn-primary:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 32px rgba(99, 102, 241, 0.45);
+        }
+        .btn-primary:active {
+            transform: scale(0.97);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: #cbd5e1;
+            font-weight: 500;
+            padding: 0.65rem 1.75rem;
+            border-radius: 9999px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+
+        /* Badge */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.2rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.70rem;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
+        }
+        .badge-open {
+            background: rgba(74, 222, 128, 0.15);
+            color: #4ade80;
+            border: 1px solid rgba(74, 222, 128, 0.20);
+        }
+        .badge-paid {
+            background: rgba(96, 165, 250, 0.15);
+            color: #60a5fa;
+            border: 1px solid rgba(96, 165, 250, 0.20);
+        }
+        .badge-inprogress {
+            background: rgba(251, 191, 36, 0.15);
+            color: #fbbf24;
+            border: 1px solid rgba(251, 191, 36, 0.20);
+        }
+
+        /* Stat number */
+        .stat-number {
+            font-size: 2.2rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+
+        /* Modal overlay */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.70);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+            padding: 1.5rem;
+        }
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .modal-box {
+            max-width: 560px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            background: #161528;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 24px;
+            padding: 2rem;
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.7);
+        }
+
+        /* Detail view */
+        .detail-view {
+            display: none;
+        }
+        .detail-view.active {
+            display: block;
+        }
+
+        /* Payment success animation */
+        .success-check {
+            animation: pop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+        @keyframes pop {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* Floating particles (decorative) */
+        .particle {
+            position: fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0.08;
+            z-index: 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            .stat-number {
+                font-size: 1.6rem;
+            }
+            .glass-card {
+                padding: 1rem !important;
+            }
+        }
+
+        /* Demo progress bar */
+        .demo-progress {
+            height: 4px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 4px;
+            overflow: hidden;
+            width: 100%;
+        }
+        .demo-progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #6366f1, #a855f7, #ec4899);
+            transition: width 0.4s ease;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ─── DECORATIVE PARTICLES ─── -->
+    <div class="particle" style="width:320px;height:320px;background:#6366f1;top:-80px;right:-80px;filter:blur(120px);"></div>
+    <div class="particle" style="width:240px;height:240px;background:#a855f7;bottom:-60px;left:-60px;filter:blur(100px);"></div>
+    <div class="particle" style="width:160px;height:160px;background:#ec4899;top:40%;right:10%;filter:blur(80px);"></div>
+
+    <!-- ─── APP ─── -->
+    <div id="app" class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-6">
+
+        <!-- ═══ NAVBAR ═══ -->
+        <header class="flex items-center justify-between flex-wrap gap-4 mb-8">
+            <div class="flex items-center gap-3">
+                <span class="text-3xl font-extrabold tracking-tight gradient-text">CodeBounty AI</span>
+                <span class="hidden sm:inline-block text-xs font-medium text-gray-400 bg-white/5 px-3 py-1 rounded-full border border-white/5">v1.0</span>
+            </div>
+            <div class="flex items-center gap-3 flex-wrap">
+                <button onclick="navigateTo('dashboard')" class="text-sm text-gray-300 hover:text-white transition px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10">Dashboard</button>
+                <button onclick="navigateTo('bounties')" class="text-sm text-gray-300 hover:text-white transition px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10">Bounties</button>
+                <button onclick="openCreateModal()" class="btn-primary text-sm flex items-center gap-2">
+                    <i class="fa-solid fa-plus"></i> Buat Bounty
+                </button>
+                <button onclick="startDemo()" class="btn-outline text-sm flex items-center gap-2 border-purple-500/30 text-purple-300 hover:bg-purple-500/10">
+                    <i class="fa-solid fa-play"></i> Demo 2 Menit
+                </button>
+                <button class="w-9 h-9 rounded-full bg-gradient-to-tr from-blue-500 to-purple-500 flex items-center justify-center text-white font-bold text-sm shadow-lg shadow-purple-500/25">
+                    JD
+                </button>
+            </div>
+        </header>
+
+        <!-- ═══ DEMO PROGRESS BAR ═══ -->
+        <div id="demoProgress" class="demo-progress mb-6 hidden">
+            <div id="demoProgressBar" class="demo-progress-bar" style="width:0%"></div>
+        </div>
+
+        <!-- ═══ VIEW: DASHBOARD ═══ -->
+        <div id="view-dashboard" class="space-y-8">
+
+            <!-- Stats Row -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div class="glass-card p-5 flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center text-blue-400 text-xl"><i class="fa-solid fa-coins"></i></div>
+                    <div>
+                        <div class="text-sm text-gray-400">Total Earned</div>
+                        <div class="stat-number text-white">1,250 <span class="text-sm font-medium text-gray-400">NIM</span></div>
+                        <div class="text-xs text-emerald-400"><i class="fa-solid fa-arrow-up"></i> ≈ $320.50</div>
+                    </div>
+                </div>
+                <div class="glass-card p-5 flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center text-emerald-400 text-xl"><i class="fa-solid fa-check-circle"></i></div>
+                    <div>
+                        <div class="text-sm text-gray-400">Bounties Completed</div>
+                        <div class="stat-number text-white">24</div>
+                        <div class="text-xs text-emerald-400"><i class="fa-solid fa-arrow-up"></i> +12 this month</div>
+                    </div>
+                </div>
+                <div class="glass-card p-5 flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center text-purple-400 text-xl"><i class="fa-solid fa-chart-line"></i></div>
+                    <div>
+                        <div class="text-sm text-gray-400">Success Rate</div>
+                        <div class="stat-number text-white">95<span class="text-sm font-medium text-gray-400">%</span></div>
+                        <div class="text-xs text-emerald-400"><i class="fa-solid fa-star"></i> Excellent</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Active Bounties + Recent Payouts (2 cols) -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Active Bounties -->
+                <div class="glass-card p-5">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-semibold text-white"><i class="fa-solid fa-bolt text-yellow-400 mr-2"></i>Active Bounties</h3>
+                        <span class="text-xs text-gray-400">3 open</span>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/5 hover:border-white/10 transition cursor-pointer" onclick="openDetail('Fix login bug on /api/auth', 'nimiq / nimiq-explorer', 100, 'Open', 'Ada error saat user login dengan 2FA kadang gagal verifikasi.')">
+                            <div>
+                                <div class="text-sm font-medium text-white">Fix login bug on /api/auth</div>
+                                <div class="text-xs text-gray-400">nimiq / nimiq-explorer</div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-sm font-bold text-emerald-400">100 NIM</div>
+                                <span class="badge badge-open"><i class="fa-regular fa-circle"></i> Open</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/5 hover:border-white/10 transition cursor-pointer" onclick="openDetail('Add dark mode toggle', 'nimiq / nimiq-wallet', 80, 'Open', 'Tambahkan dark mode toggle di seluruh halaman wallet.')">
+                            <div>
+                                <div class="text-sm font-medium text-white">Add dark mode toggle</div>
+                                <div class="text-xs text-gray-400">nimiq / nimiq-wallet</div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-sm font-bold text-emerald-400">80 NIM</div>
+                                <span class="badge badge-open"><i class="fa-regular fa-circle"></i> Open</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/5 hover:border-white/10 transition cursor-pointer" onclick="openDetail('Improve API documentation', 'nimiq / nimiq-core', 60, 'Open', 'Dokumentasi API kurang lengkap. Tambahkan contoh dan penjelasan.')">
+                            <div>
+                                <div class="text-sm font-medium text-white">Improve API documentation</div>
+                                <div class="text-xs text-gray-400">nimiq / nimiq-core</div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-sm font-bold text-emerald-400">60 NIM</div>
+                                <span class="badge badge-open"><i class="fa-regular fa-circle"></i> Open</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button onclick="navigateTo('bounties')" class="mt-4 text-sm text-blue-400 hover:text-blue-300 transition flex items-center gap-1">
+                        Lihat semua <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+
+                <!-- Recent Payouts -->
+                <div class="glass-card p-5">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-semibold text-white"><i class="fa-solid fa-receipt text-emerald-400 mr-2"></i>Recent Payouts</h3>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/5">
+                            <div>
+                                <div class="text-sm font-medium text-white">Fix transaction pagination</div>
+                                <div class="text-xs text-gray-400">nimiq / nimiq-explorer</div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-sm font-bold text-emerald-400">+75 NIM</div>
+                                <span class="badge badge-paid"><i class="fa-solid fa-check"></i> Paid</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/5">
+                            <div>
+                                <div class="text-sm font-medium text-white">Update README</div>
+                                <div class="text-xs text-gray-400">nimiq / nimiq-sdk</div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-sm font-bold text-emerald-400">+50 NIM</div>
+                                <span class="badge badge-paid"><i class="fa-solid fa-check"></i> Paid</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/5">
+                            <div>
+                                <div class="text-sm font-medium text-white">Security audit fix</div>
+                                <div class="text-xs text-gray-400">nimiq / nimiq-core</div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-sm font-bold text-emerald-400">+120 NIM</div>
+                                <span class="badge badge-paid"><i class="fa-solid fa-check"></i> Paid</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- How It Works + Features -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- How It Works -->
+                <div class="glass-card p-5">
+                    <h3 class="text-lg font-semibold text-white mb-4"><i class="fa-solid fa-circle-info text-blue-400 mr-2"></i>CARA KERJA</h3>
+                    <div class="space-y-3 text-sm text-gray-300">
+                        <div class="flex gap-3 items-start">
+                            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-xs font-bold shrink-0">1</span>
+                            <div><span class="text-white font-medium">Owner Buat Bounty</span> — Pilih repo &amp; issue, tetapkan bounty (NIM / USDT).</div>
+                        </div>
+                        <div class="flex gap-3 items-start">
+                            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-xs font-bold shrink-0">2</span>
+                            <div><span class="text-white font-medium">Deposit dana</span> — Dana dikunci di escrow via Nimiq Pay.</div>
+                        </div>
+                        <div class="flex gap-3 items-start">
+                            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-xs font-bold shrink-0">3</span>
+                            <div><span class="text-white font-medium">Developer Ambil Issue</span> — Ambil issue &amp; mulai kerjakan di GitHub.</div>
+                        </div>
+                        <div class="flex gap-3 items-start">
+                            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-xs font-bold shrink-0">4</span>
+                            <div><span class="text-white font-medium">Kirim Pull Request</span> — Selesaikan &amp; kirim PR ke repository.</div>
+                        </div>
+                        <div class="flex gap-3 items-start">
+                            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-xs font-bold shrink-0">5</span>
+                            <div><span class="text-white font-medium">AI Review</span> — AI periksa kualitas PR (bug, kesesuaian, dll).</div>
+                        </div>
+                        <div class="flex gap-3 items-start">
+                            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-xs font-bold shrink-0">6</span>
+                            <div><span class="text-white font-medium">Owner Approve</span> — Owner approve PR jika sudah sesuai.</div>
+                        </div>
+                        <div class="flex gap-3 items-start">
+                            <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xs font-bold shrink-0">7</span>
+                            <div><span class="text-white font-medium">Instant Payment</span> — Pembayaran langsung via Nimiq Pay.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Features -->
+                <div class="glass-card p-5">
+                    <h3 class="text-lg font-semibold text-white mb-4"><i class="fa-solid fa-star text-yellow-400 mr-2"></i>FITUR UTAMA</h3>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="p-3 rounded-xl bg-white/5 border border-white/5 text-center">
+                            <div class="text-2xl text-blue-400 mb-1"><i class="fa-brands fa-github"></i></div>
+                            <div class="text-sm font-medium text-white">GitHub Integration</div>
+                            <div class="text-xs text-gray-400">Hubungkan repo &amp; ambil issue</div>
+                        </div>
+                        <div class="p-3 rounded-xl bg-white/5 border border-white/5 text-center">
+                            <div class="text-2xl text-purple-400 mb-1"><i class="fa-solid fa-brain"></i></div>
+                            <div class="text-sm font-medium text-white">AI Code Review</div>
+                            <div class="text-xs text-gray-400">Review PR &amp; jaga kualitas</div>
+                        </div>
+                        <div class="p-3 rounded-xl bg-white/5 border border-white/5 text-center">
+                            <div class="text-2xl text-emerald-400 mb-1"><i class="fa-solid fa-lock"></i></div>
+                            <div class="text-sm font-medium text-white">Escrow &amp; Instant</div>
+                            <div class="text-xs text-gray-400">Dana aman, bayar instan</div>
+                        </div>
+                        <div class="p-3 rounded-xl bg-white/5 border border-white/5 text-center">
+                            <div class="text-2xl text-yellow-400 mb-1"><i class="fa-solid fa-coins"></i></div>
+                            <div class="text-sm font-medium text-white">Multi Currency</div>
+                            <div class="text-xs text-gray-400">NIM atau USDT</div>
+                        </div>
+                        <div class="p-3 rounded-xl bg-white/5 border border-white/5 text-center">
+                            <div class="text-2xl text-orange-400 mb-1"><i class="fa-solid fa-trophy"></i></div>
+                            <div class="text-sm font-medium text-white">Leaderboard</div>
+                            <div class="text-xs text-gray-400">Developer paling aktif</div>
+                        </div>
+                        <div class="p-3 rounded-xl bg-white/5 border border-white/5 text-center">
+                            <div class="text-2xl text-pink-400 mb-1"><i class="fa-solid fa-rocket"></i></div>
+                            <div class="text-sm font-medium text-white">Startup Ready</div>
+                            <div class="text-xs text-gray-400">Platform global</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tech Stack -->
+            <div class="glass-card p-5 text-center">
+                <h3 class="text-sm font-medium text-gray-400 mb-3">TECHNOLOGY STACK</h3>
+                <div class="flex flex-wrap justify-center gap-3 text-sm text-gray-300">
+                    <span class="px-3 py-1.5 rounded-full bg-white/5 border border-white/5">Next.js</span>
+                    <span class="px-3 py-1.5 rounded-full bg-white/5 border border-white/5">TypeScript</span>
+                    <span class="px-3 py-1.5 rounded-full bg-white/5 border border-white/5">Tailwind CSS</span>
+                    <span class="px-3 py-1.5 rounded-full bg-white/5 border border-white/5">Nimiq Pay API</span>
+                    <span class="px-3 py-1.5 rounded-full bg-white/5 border border-white/5">GitHub API</span>
+                    <span class="px-3 py-1.5 rounded-full bg-white/5 border border-white/5">AI (OpenAI)</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══ VIEW: BOUNTIES ═══ -->
+        <div id="view-bounties" class="space-y-6 hidden">
+            <div class="flex items-center justify-between flex-wrap gap-3">
+                <h2 class="text-2xl font-bold text-white">Semua Bounty</h2>
+                <button onclick="openCreateModal()" class="btn-primary text-sm flex items-center gap-2">
+                    <i class="fa-solid fa-plus"></i> Buat Bounty
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Bounty cards -->
+                <div class="glass-card p-5 cursor-pointer hover:border-purple-500/30 transition" onclick="openDetail('Fix login bug on /api/auth', 'nimiq / nimiq-explorer', 100, 'Open', 'Ada error saat user login dengan 2FA kadang gagal verifikasi.')">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <div class="text-white font-semibold">Fix login bug on /api/auth</div>
+                            <div class="text-sm text-gray-400">nimiq / nimiq-explorer</div>
+                        </div>
+                        <span class="badge badge-open"><i class="fa-regular fa-circle"></i> Open</span>
+                    </div>
+                    <div class="mt-3 flex items-center justify-between">
+                        <span class="text-emerald-400 font-bold text-lg">100 NIM</span>
+                        <span class="text-xs text-gray-500">Estimasi: 3 hari</span>
+                    </div>
+                </div>
+
+                <div class="glass-card p-5 cursor-pointer hover:border-purple-500/30 transition" onclick="openDetail('Add dark mode toggle', 'nimiq / nimiq-wallet', 80, 'Open', 'Tambahkan dark mode toggle di seluruh halaman wallet.')">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <div class="text-white font-semibold">Add dark mode toggle</div>
+                            <div class="text-sm text-gray-400">nimiq / nimiq-wallet</div>
+                        </div>
+                        <span class="badge badge-open"><i class="fa-regular fa-circle"></i> Open</span>
+                    </div>
+                    <div class="mt-3 flex items-center justify-between">
+                        <span class="text-emerald-400 font-bold text-lg">80 NIM</span>
+                        <span class="text-xs text-gray-500">Estimasi: 2 hari</span>
+                    </div>
+                </div>
+
+                <div class="glass-card p-5 cursor-pointer hover:border-purple-500/30 transition" onclick="openDetail('Improve API documentation', 'nimiq / nimiq-core', 60, 'Open', 'Dokumentasi API kurang lengkap. Tambahkan contoh dan penjelasan.')">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <div class="text-white font-semibold">Improve API documentation</div>
+                            <div class="text-sm text-gray-400">nimiq / nimiq-core</div>
+                        </div>
+                        <span class="badge badge-open"><i class="fa-regular fa-circle"></i> Open</span>
+                    </div>
+                    <div class="mt-3 flex items-center justify-between">
+                        <span class="text-emerald-400 font-bold text-lg">60 NIM</span>
+                        <span class="text-xs text-gray-500">Estimasi: 1 hari</span>
+                    </div>
+                </div>
+
+                <div class="glass-card p-5 cursor-pointer hover:border-purple-500/30 transition" onclick="openDetail('Fix transaction pagination', 'nimiq / nimiq-explorer', 75, 'Completed', 'Pagination pada halaman transaksi tidak berjalan dengan benar.')">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <div class="text-white font-semibold">Fix transaction pagination</div>
+                            <div class="text-sm text-gray-400">nimiq / nimiq-explorer</div>
+                        </div>
+                        <span class="badge badge-paid"><i class="fa-solid fa-check"></i> Completed</span>
+                    </div>
+                    <div class="mt-3 flex items-center justify-between">
+                        <span class="text-emerald-400 font-bold text-lg">75 NIM</span>
+                        <span class="text-xs text-gray-500">Selesai 2 hari lalu</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══ VIEW: DETAIL BOUNTY ═══ -->
+        <div id="view-detail" class="space-y-6 hidden">
+            <button onclick="navigateTo('bounties')" class="text-gray-400 hover:text-white transition flex items-center gap-2 text-sm">
+                <i class="fa-solid fa-arrow-left"></i> Kembali ke Bounties
+            </button>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="lg:col-span-2 glass-card p-6">
+                    <div class="flex items-start justify-between flex-wrap gap-3">
+                        <div>
+                            <h2 id="detail-title" class="text-2xl font-bold text-white">Fix login bug on /api/auth</h2>
+                            <p id="detail-repo" class="text-gray-400 text-sm">nimiq / nimiq-explorer</p>
+                        </div>
+                        <span id="detail-status" class="badge badge-open"><i class="fa-regular fa-circle"></i> Open</span>
+                    </div>
+                    <p id="detail-desc" class="mt-4 text-gray-300 text-sm leading-relaxed">Ada error saat user login dengan 2FA kadang gagal verifikasi.</p>
+                    <div class="mt-6 flex flex-wrap gap-4 text-sm">
+                        <div><span class="text-gray-400">Reward</span> <span id="detail-reward" class="text-emerald-400 font-bold ml-2">100 NIM</span></div>
+                        <div><span class="text-gray-400">Estimasi</span> <span class="text-white ml-2">3 hari</span></div>
+                        <div><span class="text-gray-400">Difficulty</span> <span class="text-yellow-400 ml-2">Medium</span></div>
+                    </div>
+                    <div class="mt-6 p-4 rounded-xl bg-white/5 border border-white/5">
+                        <div class="flex items-center gap-2 text-sm text-gray-400"><i class="fa-solid fa-robot text-purple-400"></i> AI Review Summary</div>
+                        <div class="mt-2 text-gray-300 text-sm">PR ini menyelesaikan issue dengan baik. Perubahan sudah sesuai dan tidak menimbulkan bug baru.</div>
+                        <div class="mt-2 flex flex-wrap gap-2 text-xs">
+                            <span class="px-2 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Kode bersih</span>
+                            <span class="px-2 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Mengikuti struktur project</span>
+                            <span class="px-2 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Fix sesuai deskripsi issue</span>
+                        </div>
+                    </div>
+                    <div class="mt-4 p-4 rounded-xl bg-white/5 border border-white/5">
+                        <div class="flex items-center gap-2 text-sm text-gray-400"><i class="fa-solid fa-code-fork text-blue-400"></i> Pull Request</div>
+                        <div class="flex items-center justify-between mt-2">
+                            <div>
+                                <span class="text-white font-medium">ndra-dev</span>
+                                <span class="text-gray-400 text-sm ml-2">#512 Fix: handle 2FA verification error</span>
+                            </div>
+                            <span class="badge badge-open"><i class="fa-regular fa-clock"></i> Review</span>
+                        </div>
+                    </div>
+                    <div class="mt-6 flex gap-3">
+                        <button onclick="showPaymentSuccess()" class="btn-primary text-sm flex items-center gap-2">
+                            <i class="fa-solid fa-rocket"></i> Ambil Bounty
+                        </button>
+                        <button class="btn-outline text-sm">Lihat di GitHub</button>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <div class="glass-card p-5">
+                        <h4 class="text-sm font-medium text-gray-400 mb-3">Pembayaran</h4>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between"><span class="text-gray-400">Status</span><span class="text-emerald-400"><i class="fa-solid fa-check-circle"></i> Siap</span></div>
+                            <div class="flex justify-between"><span class="text-gray-400">Escrow</span><span class="text-white">100 NIM</span></div>
+                            <div class="flex justify-between"><span class="text-gray-400">Wallet</span><span class="text-white font-mono text-xs">NQ14 5x6d ... 8n3k</span></div>
+                        </div>
+                    </div>
+                    <div class="glass-card p-5">
+                        <h4 class="text-sm font-medium text-gray-400 mb-3">Kontributor</h4>
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-blue-500 to-purple-500 flex items-center justify-center text-white font-bold text-xs">JD</div>
+                            <div>
+                                <div class="text-white text-sm font-medium">John Doe</div>
+                                <div class="text-xs text-gray-400">Developer</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="glass-card p-5">
+                        <h4 class="text-sm font-medium text-gray-400 mb-3">Teknologi</h4>
+                        <div class="flex flex-wrap gap-2 text-xs">
+                            <span class="px-2 py-1 rounded-full bg-white/5 border border-white/5">TypeScript</span>
+                            <span class="px-2 py-1 rounded-full bg-white/5 border border-white/5">React</span>
+                            <span class="px-2 py-1 rounded-full bg-white/5 border border-white/5">Next.js</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══ MODAL: CREATE BOUNTY ═══ -->
+        <div id="createModal" class="modal-overlay" onclick="if(event.target===this)closeCreateModal()">
+            <div class="modal-box">
+                <div class="flex items-center justify-between mb-5">
+                    <h2 class="text-xl font-bold text-white"><i class="fa-solid fa-plus-circle text-blue-400 mr-2"></i>Buat Bounty</h2>
+                    <button onclick="closeCreateModal()" class="text-gray-400 hover:text-white text-xl">&times;</button>
+                </div>
+                <form id="createBountyForm" onsubmit="handleCreateBounty(event)" class="space-y-4">
+                    <div>
+                        <label class="text-sm text-gray-400 block mb-1">Repository</label>
+                        <select class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-purple-500/50">
+                            <option value="nimiq/nimiq-explorer">nimiq / nimiq-explorer</option>
+                            <option value="nimiq/nimiq-wallet">nimiq / nimiq-wallet</option>
+                            <option value="nimiq/nimiq-core">nimiq / nimiq-core</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-sm text-gray-400 block mb-1">Pilih Issue</label>
+                        <select class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-purple-500/50">
+                            <option>#432 Fix login bug on /api/auth</option>
+                            <option>#435 Add dark mode toggle</option>
+                            <option>#440 Improve API documentation</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-sm text-gray-400 block mb-1">Deskripsi</label>
+                        <textarea rows="3" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-purple-500/50" placeholder="Ada error saat user login dengan 2FA kadang gagal verifikasi."></textarea>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="text-sm text-gray-400 block mb-1">Bounty Amount</label>
+                            <input type="number" value="100" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-purple-500/50" />
+                        </div>
+                        <div>
+                            <label class="text-sm text-gray-400 block mb-1">Estimasi Waktu</label>
+                            <select class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-purple-500/50">
+                                <option>1 hari</option>
+                                <option selected>3 hari</option>
+                                <option>5 hari</option>
+                                <option>7 hari</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="flex gap-3 pt-2">
+                        <button type="submit" class="flex-1 btn-primary text-sm"><i class="fa-solid fa-paper-plane mr-2"></i>Publish Bounty</button>
+                        <button type="button" onclick="closeCreateModal()" class="btn-outline text-sm">Batal</button>
+                    </div>
+                </form>
+                <div class="mt-4 p-3 rounded-xl bg-blue-500/10 border border-blue-500/20 text-xs text-blue-300 flex items-center gap-2">
+                    <i class="fa-solid fa-lightbulb"></i> Dana akan dikunci di escrow Nimiq Pay setelah bounty dibuat.
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══ MODAL: PAYMENT SUCCESS ═══ -->
+        <div id="paymentSuccessModal" class="modal-overlay" onclick="if(event.target===this)closePaymentSuccess()">
+            <div class="modal-box text-center">
+                <div class="success-check text-6xl text-emerald-400 mb-4"><i class="fa-regular fa-circle-check"></i></div>
+                <h2 class="text-2xl font-bold text-white mb-2">Pembayaran Berhasil!</h2>
+                <p class="text-gray-400">Bounty telah dibayarkan ke wallet Anda.</p>
+                <div class="my-6 p-4 rounded-xl bg-white/5 border border-white/10 inline-block">
+                    <div class="text-sm text-gray-400">Jumlah</div>
+                    <div class="text-3xl font-bold text-emerald-400">100 <span class="text-lg font-medium text-gray-400">NIM</span></div>
+                    <div class="text-xs text-gray-500">≈ $25.60</div>
+                </div>
+                <div class="text-sm text-gray-400 mt-2">Dikirim ke <span class="text-white font-mono">NQ14 5x6d ... 8n3k</span></div>
+                <div class="mt-6 flex gap-3 justify-center">
+                    <button onclick="closePaymentSuccess(); navigateTo('dashboard')" class="btn-primary text-sm">Lihat Dashboard</button>
+                    <button onclick="closePaymentSuccess()" class="btn-outline text-sm">Tutup</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ─── JAVASCRIPT ─── -->
+    <script>
+        // ── State ──
+        let currentView = 'dashboard';
+        let demoInterval = null;
+        let demoStep = 0;
+
+        // ── Navigation ──
+        function navigateTo(view) {
+            // Hide all views
+            document.querySelectorAll('[id^="view-"]').forEach(el => el.classList.add('hidden'));
+
+            // Show target
+            const target = document.getElementById('view-' + view);
+            if (target) {
+                target.classList.remove('hidden');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+            currentView = view;
+        }
+
+        // ── Create Modal ──
+        function openCreateModal() {
+            document.getElementById('createModal').classList.add('show');
+            document.body.classList.add('modal-open');
+        }
+
+        function closeCreateModal() {
+            document.getElementById('createModal').classList.remove('show');
+            document.body.classList.remove('modal-open');
+        }
+
+        function handleCreateBounty(e) {
+            e.preventDefault();
+            closeCreateModal();
+            showToast('Bounty berhasil dibuat! Dana escrow terkunci.', 'success');
+        }
+
+        // ── Toast ──
+        function showToast(message, type = 'info') {
+            const colors = {
+                success: 'bg-emerald-500/20 border-emerald-500/30 text-emerald-300',
+                info: 'bg-blue-500/20 border-blue-500/30 text-blue-300',
+                warning: 'bg-yellow-500/20 border-yellow-500/30 text-yellow-300'
+            };
+            const toast = document.createElement('div');
+            toast.className =
+                `fixed bottom-6 left-1/2 -translate-x-1/2 z-50 ${colors[type]} backdrop-blur-lg border px-6 py-3 rounded-2xl text-sm shadow-2xl flex items-center gap-3`;
+            toast.innerHTML =
+                `<i class="fa-solid ${type === 'success' ? 'fa-check-circle' : type === 'info' ? 'fa-info-circle' : 'fa-triangle-exclamation'}"></i> ${message}`;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 4000);
+        }
+
+        // ── Detail ──
+        function openDetail(title, repo, reward, status, desc) {
+            document.getElementById('detail-title').textContent = title;
+            document.getElementById('detail-repo').textContent = repo;
+            document.getElementById('detail-reward').textContent = reward + ' NIM';
+            document.getElementById('detail-desc').textContent = desc;
+
+            const statusEl = document.getElementById('detail-status');
+            if (status === 'Open') {
+                statusEl.className = 'badge badge-open';
+                statusEl.innerHTML = '<i class="fa-regular fa-circle"></i> Open';
+            } else {
+                statusEl.className = 'badge badge-paid';
+                statusEl.innerHTML = '<i class="fa-solid fa-check"></i> Completed';
+            }
+
+            navigateTo('detail');
+        }
+
+        // ── Payment Success ──
+        function showPaymentSuccess() {
+            document.getElementById('paymentSuccessModal').classList.add('show');
+            document.body.classList.add('modal-open');
+        }
+
+        function closePaymentSuccess() {
+            document.getElementById('paymentSuccessModal').classList.remove('show');
+            document.body.classList.remove('modal-open');
+        }
+
+        // ── Demo 2 Menit ──
+        function startDemo() {
+            if (demoInterval) {
+                clearInterval(demoInterval);
+                demoInterval = null;
+                document.getElementById('demoProgress').classList.add('hidden');
+                document.getElementById('demoProgressBar').style.width = '0%';
+                demoStep = 0;
+                return;
+            }
+
+            const steps = [
+                { label: 'Buat Bounty (1 issue, 100 NIM)', progress: 14 },
+                { label: 'Developer Ambil Issue', progress: 28 },
+                { label: 'Kirim Pull Request', progress: 42 },
+                { label: 'AI Review (Score 92/100)', progress: 57 },
+                { label: 'Owner Approve', progress: 71 },
+                { label: 'Pembayaran Instan', progress: 85 },
+                { label: 'Bounty Dibayarkan!', progress: 100 },
+            ];
+
+            demoStep = 0;
+            const progressEl = document.getElementById('demoProgress');
+            const barEl = document.getElementById('demoProgressBar');
+            progressEl.classList.remove('hidden');
+            barEl.style.width = '0%';
+
+            showToast('🚀 Demo 2 Menit dimulai!', 'info');
+
+            demoInterval = setInterval(() => {
+                if (demoStep < steps.length) {
+                    const step = steps[demoStep];
+                    barEl.style.width = step.progress + '%';
+                    showToast(`⏳ ${step.label}`, 'info');
+                    demoStep++;
+                } else {
+                    clearInterval(demoInterval);
+                    demoInterval = null;
+                    setTimeout(() => {
+                        showPaymentSuccess();
+                        showToast('🎉 Demo selesai! Bounty telah dibayarkan.', 'success');
+                        document.getElementById('demoProgress').classList.add('hidden');
+                        document.getElementById('demoProgressBar').style.width = '0%';
+                    }, 600);
+                }
+            }, 1800);
+
+            // Tombol untuk menghentikan demo
+            const stopBtn = document.createElement('button');
+            stopBtn.id = 'stopDemoBtn';
+            stopBtn.className =
+                'fixed top-4 right-4 z-50 bg-red-500/20 backdrop-blur-lg border border-red-500/30 text-red-300 px-4 py-2 rounded-xl text-sm shadow-2xl flex items-center gap-2';
+            stopBtn.innerHTML = '<i class="fa-solid fa-stop"></i> Hentikan Demo';
+            stopBtn.onclick = function() {
+                if (demoInterval) {
+                    clearInterval(demoInterval);
+                    demoInterval = null;
+                    document.getElementById('demoProgress').classList.add('hidden');
+                    document.getElementById('demoProgressBar').style.width = '0%';
+                    showToast('⏹️ Demo dihentikan.', 'warning');
+                    this.remove();
+                }
+            };
+            document.body.appendChild(stopBtn);
+
+            // Cleanup when demo finishes
+            const originalClear = clearInterval;
+            const checkDemoDone = setInterval(() => {
+                if (!demoInterval && demoStep >= steps.length) {
+                    const btn = document.getElementById('stopDemoBtn');
+                    if (btn) btn.remove();
+                    clearInterval(checkDemoDone);
+                }
+            }, 500);
+        }
+
+        // ── Keyboard shortcuts ──
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeCreateModal();
+                closePaymentSuccess();
+            }
+        });
+
+        // ── Bootstrap: show dashboard ──
+        navigateTo('dashboard');
+
+        console.log('🚀 CodeBounty AI — Mini aplikasi siap!');
+    </script>
+
+</body>
+</html>
